@@ -1,7 +1,26 @@
 Specifications pour le projet Android :
 
-Interface :
-	Une carte en activité principale avec position de l'utilisateur
-	Champs de recherche en haut
+Caractéristiques :
+	Interface simple, rapide, intuitive :
+		- Champ de recherche accessible très rapidement et visible en permanence
+		- Carte affichée au lancement focus sur l'UM2
+		- Bouton de focus
+
+Fonctionnalités :
+	Carte interactive
+	Carte "annotée"
+	Liste des batiments
+	Guidage position actuelle -> position souhaitée
+	Recherche textuelle / vocale
 	
-Développement incrémental
+Fonctionnalités souhaitées :
+	Points clés (Café, parkings, ...)
+	Guidage vocal
+	Synchronisation EDT
+	Mode "plus court" / "plus accessible"
+	
+Vues :
+	Carte : Affichage d'une carte en plein écran avec barre de menu pour préférences rapides.
+	Préférences : Differents choix modifiant le comportement de l'utilisateur
+	Choix lieu répertorié
+	
