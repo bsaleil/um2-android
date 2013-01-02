@@ -10,8 +10,10 @@ import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.ScaleBarOverlay;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -22,9 +24,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
+import android.view.MenuItem;
 
-public class CustomMapActivity extends Activity implements LocationListener 
+public class CustomMapActivity extends Activity
 {
 	private MapView mapView;
 	private MapController mapController;
@@ -44,9 +46,14 @@ public class CustomMapActivity extends Activity implements LocationListener
 		return true;
 	}
 	
-	public void onFocusClick(View v)
+	// Listener du click sur le bouton focus du menu
+	public void onFocusClick(MenuItem item)
 	{
-		
+		Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if(lastLocation != null)
+		{
+			updateLoc(lastLocation);
+		}
 	}
 	
 	public void initializeMap()
@@ -55,8 +62,6 @@ public class CustomMapActivity extends Activity implements LocationListener
 		mapView.setClickable(true);
 		mapController = this.mapView.getController();
 		
-		// Zooms
-		mapView.setBuiltInZoomControls(true);
 		mapView.setMultiTouchControls(true);
 		
 		// Afficher la carte
@@ -71,36 +76,70 @@ public class CustomMapActivity extends Activity implements LocationListener
 		// Charger la carte en ligne : passer à false pour charger en local uniquement
 		mapView.setUseDataConnection(true);
 		
-		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 20, this);
-		
 		//--- Create Overlay
-	        overlayItemArray = new ArrayList<OverlayItem>();
-	        
-	        DefaultResourceProxyImpl defaultResourceProxyImpl 
-	         = new DefaultResourceProxyImpl(this);
-	        MyItemizedIconOverlay myItemizedIconOverlay = new MyItemizedIconOverlay(overlayItemArray, null, defaultResourceProxyImpl);
-	        mapView.getOverlays().add(myItemizedIconOverlay);
+		overlayItemArray = new ArrayList<OverlayItem>();
+		
+		DefaultResourceProxyImpl defaultResourceProxyImpl = new DefaultResourceProxyImpl(this);
+		MyItemizedIconOverlay myItemizedIconOverlay 
+			= new MyItemizedIconOverlay(overlayItemArray, null, defaultResourceProxyImpl);
+		mapView.getOverlays().add(myItemizedIconOverlay);
+		
+		locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		
+		Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if(lastLocation != null)
+		{
+			updateLoc(lastLocation);
+		}
+		
+		ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(this);
+		mapView.getOverlays().add(myScaleBarOverlay);
 	}
 	
+	protected void onResume() 
+	{	
+		super.onResume();
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, myLocationListener);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, myLocationListener);
+	}
+
 	@Override
-	public void onLocationChanged(Location location) 
+	protected void onPause() 
 	{
-		int lat = (int) (location.getLatitude() * 1E6);
-		int lng = (int) (location.getLongitude() * 1E6);
-		GeoPoint gpt = new GeoPoint(lat, lng);
-		mapController.setCenter(gpt);
+		super.onPause();
+		locationManager.removeUpdates(myLocationListener);
+	}
+	
+	private void updateLoc(Location loc)
+	{
+		GeoPoint locGeoPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
+		mapController.setCenter(locGeoPoint);    	
+	    	setOverlayLoc(loc);
+	    	mapView.invalidate();
 	}
 
-	@Override
-	public void onProviderDisabled(String provider) {}
-
-	@Override
-	public void onProviderEnabled(String provider) {}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {}
+	private void setOverlayLoc(Location overlayloc)
+	{
+		GeoPoint overlocGeoPoint = new GeoPoint(overlayloc);
+		overlayItemArray.clear();
+		OverlayItem newMyLocationItem = new OverlayItem("My Location", "My Location", overlocGeoPoint);
+		overlayItemArray.add(newMyLocationItem);
+    	}
 	
+	private LocationListener myLocationListener = new LocationListener()
+	{
+		public void onLocationChanged(Location location) 
+		{
+			updateLoc(location);
+		}
+	
+		public void onProviderDisabled(String provider) {}
+		
+		public void onProviderEnabled(String provider) {}
+		
+		public void onStatusChanged(String provider, int status, Bundle extras) {}
+	    };
+	    
 	private class MyItemizedIconOverlay extends ItemizedIconOverlay<OverlayItem> 
 	{
 		public MyItemizedIconOverlay(
