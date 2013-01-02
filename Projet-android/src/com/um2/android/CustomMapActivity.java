@@ -5,6 +5,8 @@ import org.osmdroid.views.MapView;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 public class CustomMapActivity extends Activity 
 {
@@ -31,5 +33,13 @@ public class CustomMapActivity extends Activity
 		
 		// Charger la carte en ligne : passer à false pour charger en local uniquement
 		mapView.setUseDataConnection(true);		
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.activity_map, menu);
+	    return true;
 	}
 }
