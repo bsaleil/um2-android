@@ -1,9 +1,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item android:id="@+id/menu_search"
+          android:title="@string/menu_search"
+          android:icon="@android:drawable/ic_menu_search"
+          android:showAsAction="always"
+          android:actionViewClass="android.widget.SearchView"/>
 
-    <item
-        android:id="@+id/menu_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/menu_settings"/>
-
+    <item android:id="@+id/menu_focus"
+          android:icon="@android:drawable/ic_menu_mylocation"
+          android:title="@string/menu_focus"
+          android:showAsAction="ifRoom|collapseActionView" />
+    
+    <item android:id="@+id/menu_list"
+          android:icon="@android:drawable/ic_menu_myplaces"
+          android:title="@string/menu_list"
+          android:showAsAction="ifRoom|collapseActionView" />
+    
+    <item android:id="@+id/menu_prefs"
+          android:icon="@android:drawable/ic_menu_preferences"
+          android:title="@string/menu_prefs"
+          android:showAsAction="ifRoom|collapseActionView" />
+    
 </menu>
