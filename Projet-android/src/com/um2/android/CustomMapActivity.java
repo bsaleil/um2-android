@@ -20,6 +20,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
 
 public class CustomMapActivity extends Activity implements LocationListener 
 {
@@ -32,6 +35,18 @@ public class CustomMapActivity extends Activity implements LocationListener
 	{
 		super.onCreate(savedInstanceState);
 		initializeMap();
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.activity_map, menu);
+		return true;
+	}
+	
+	public void onFocusClick(View v)
+	{
+		
 	}
 	
 	public void initializeMap()
@@ -67,7 +82,7 @@ public class CustomMapActivity extends Activity implements LocationListener
 	        MyItemizedIconOverlay myItemizedIconOverlay = new MyItemizedIconOverlay(overlayItemArray, null, defaultResourceProxyImpl);
 	        mapView.getOverlays().add(myItemizedIconOverlay);
 	}
-
+	
 	@Override
 	public void onLocationChanged(Location location) 
 	{
