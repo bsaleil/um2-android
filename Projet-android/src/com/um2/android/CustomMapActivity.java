@@ -5,11 +5,15 @@ import java.util.List;
 
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.ResourceProxy;
+import org.osmdroid.bonuspack.routing.OSRMRoadManager;
+import org.osmdroid.bonuspack.routing.Road;
+import org.osmdroid.bonuspack.routing.RoadManager;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.PathOverlay;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 
 import android.app.Activity;
@@ -37,6 +41,14 @@ public class CustomMapActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		initializeMap();
+		
+		new Thread(new Runnable() 
+		{
+			public void run()
+			{
+				testRoute();
+			}
+		}).start();
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -49,11 +61,11 @@ public class CustomMapActivity extends Activity
 	// Listener du click sur le bouton focus du menu
 	public void onFocusClick(MenuItem item)
 	{
-		Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		if(lastLocation != null)
-		{
-			updateLoc(lastLocation);
-		}
+//		Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//		if(lastLocation != null)
+//		{
+//			updateLoc(lastLocation);
+//		}
 	}
 	
 	public void initializeMap()
@@ -68,42 +80,56 @@ public class CustomMapActivity extends Activity
 		setContentView(mapView); 
 		
 		// Niveau de zoom initial
-		mapController.setZoom(14); 
+		mapController.setZoom(14);
 		
 		// Entrée de la fac de science
-		mapController.setCenter(new GeoPoint(43.6315843, 3.8612323)); 
+		mapController.setCenter(new GeoPoint(43.6315843, 3.8612323));
 		
 		// Charger la carte en ligne : passer à false pour charger en local uniquement
 		mapView.setUseDataConnection(true);
 		
 		//--- Create Overlay
-		overlayItemArray = new ArrayList<OverlayItem>();
-		
-		DefaultResourceProxyImpl defaultResourceProxyImpl = new DefaultResourceProxyImpl(this);
-		MyItemizedIconOverlay myItemizedIconOverlay 
-			= new MyItemizedIconOverlay(overlayItemArray, null, defaultResourceProxyImpl);
-		mapView.getOverlays().add(myItemizedIconOverlay);
-		
-		locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-		
-		Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		if(lastLocation != null)
-		{
-			updateLoc(lastLocation);
-		}
-		
-		ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(this);
-		mapView.getOverlays().add(myScaleBarOverlay);
+//		overlayItemArray = new ArrayList<OverlayItem>();
+//		
+//		DefaultResourceProxyImpl defaultResourceProxyImpl = new DefaultResourceProxyImpl(this);
+//		MyItemizedIconOverlay myItemizedIconOverlay 
+//			= new MyItemizedIconOverlay(overlayItemArray, null, defaultResourceProxyImpl);
+//		mapView.getOverlays().add(myItemizedIconOverlay);
+//		
+//		locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+//		
+//		Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//		if(lastLocation != null)
+//		{
+//			updateLoc(lastLocation);
+//		}
+//		
+//		ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(this);
+//		mapView.getOverlays().add(myScaleBarOverlay);
 	}
 	
-	protected void onResume() 
+	public void testRoute()
+	{
+		RoadManager roadManager = new OSRMRoadManager();
+		//roadManager.addRequestOption("routeType=bicycle");
+		
+		ArrayList<GeoPoint> waypoints = new ArrayList<GeoPoint>();
+		waypoints.add(new GeoPoint(43.631975, 3.861254));
+		waypoints.add(new GeoPoint(43.632647, 3.863856)); //end point
+		Road road = roadManager.getRoad(waypoints);
+		PathOverlay roadOverlay = RoadManager.buildRoadOverlay(road, mapView.getContext());
+		
+		mapView.getOverlays().add(roadOverlay);
+		mapView.invalidate();
+	}
+	
+/*	protected void onResume() 
 	{	
 		super.onResume();
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, myLocationListener);
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, myLocationListener);
 	}
 
-	@Override
 	protected void onPause() 
 	{
 		super.onPause();
@@ -154,7 +180,7 @@ public class CustomMapActivity extends Activity
 		{
 			super.draw(canvas, mapview, arg2);
 
-			if (!overlayItemArray.isEmpty()) 
+			if(!overlayItemArray.isEmpty()) 
 			{
 				GeoPoint in = overlayItemArray.get(0).getPoint();
 
@@ -166,4 +192,5 @@ public class CustomMapActivity extends Activity
 			}
 		}
 	}
+	*/
 }
