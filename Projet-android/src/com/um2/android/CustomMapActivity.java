@@ -7,11 +7,14 @@ import org.osmdroid.views.MapView;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class CustomMapActivity extends Activity
 {
@@ -24,7 +27,7 @@ public class CustomMapActivity extends Activity
 		// TODO : Gérer la MAJ de la route + marqueur dans le thread (pour l'instant, on calcule et affiche qu'une fois)
 		// TODO : La destination est écrite en dur. A passer en paramètre du thread, puis relance le thread en cas de changement ?
 		super.onCreate(savedInstanceState);
-		
+				
 		initializeMap();
 		
 		// Démarrage du thread qui calcule et dessine la route et le marqueur
@@ -55,7 +58,7 @@ public class CustomMapActivity extends Activity
 	// Listener du click sur le bouton focus du menu
 		public void onFocusClick(MenuItem item)
 		{
-			Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 			if(lastLocation != null)
 			{
 				GeoPoint locGeoPoint = new GeoPoint(lastLocation.getLatitude(), lastLocation.getLongitude());

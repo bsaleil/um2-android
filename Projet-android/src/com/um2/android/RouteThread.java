@@ -13,6 +13,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Looper;
+import android.util.Log;
+import android.widget.Toast;
 
 // Ce thread est chargé de calculer la route depuis la position actuelle, vers un point donné
 public class RouteThread extends Thread
@@ -33,14 +36,13 @@ public class RouteThread extends Thread
 		try
 		{
 			// On récupère l'endroit ou on se trouve
-			Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 			if(lastLocation != null)
 			{
 				// On calcule la route
 				PathOverlay po = new PathOverlay(Color.RED, context);
 				YOURSRoute yr = new YOURSRoute();
 				ArrayList<double[]> al = yr.calculateRoute(lastLocation,null);
-				
 				// Pour chaque point
 				for (int i=0; i<al.size(); i++)
 				{
@@ -58,6 +60,11 @@ public class RouteThread extends Thread
 		        ArrayList<SimpleLocationOverlay> overlayItemArray = new ArrayList<SimpleLocationOverlay>();
 		        overlayItemArray.add(oi);
 				mapView.getOverlays().addAll(0,overlayItemArray);
+			}
+			else // Lecture position impossible
+			{
+				Log.d("MONTAG", "ERROR");
+			
 			}
 			
 		} catch (IOException e) {
