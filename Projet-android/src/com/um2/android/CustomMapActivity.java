@@ -7,14 +7,11 @@ import org.osmdroid.views.MapView;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class CustomMapActivity extends Activity
 {
@@ -56,15 +53,15 @@ public class CustomMapActivity extends Activity
 	}
 	
 	// Listener du click sur le bouton focus du menu
-		public void onFocusClick(MenuItem item)
+	public void onFocusClick(MenuItem item)
+	{
+		Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		if(lastLocation != null)
 		{
-			Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-			if(lastLocation != null)
-			{
-				GeoPoint locGeoPoint = new GeoPoint(lastLocation.getLatitude(), lastLocation.getLongitude());
-				mapController.setCenter(locGeoPoint);
-			}
+			GeoPoint locGeoPoint = new GeoPoint(lastLocation.getLatitude(), lastLocation.getLongitude());
+			mapController.setCenter(locGeoPoint);
 		}
+	}
 	
 	// Menu
 	public boolean onCreateOptionsMenu(Menu menu)
