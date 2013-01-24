@@ -13,6 +13,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Looper;
 import android.util.Log;
 
 // Ce thread est chargé de calculer la route depuis la position actuelle, vers un point donné
@@ -21,28 +22,36 @@ public class RouteThread extends Thread
 	private LocationManager locationManager;
 	private Context context;
 	private MapView mapView;
-
-	public RouteThread(MapView mv, Context c) 
+	private Location position;
+	
+	public RouteThread(MapView mv, Context c, Location l) 
 	{
 		mapView = mv;
 		context = c;
-		locationManager = (LocationManager) context
-				.getSystemService(Context.LOCATION_SERVICE);
+		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		position = l;
+	}
+	
+	public void setPosition(Location l)
+	{
+		position = l;
 	}
 
 	public void run() 
 	{
-		try 
+		Looper.prepare();
+		try
 		{
 			// On récupère l'endroit ou on se trouve
-			Location lastLocation = locationManager
-					.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-			if (lastLocation != null) 
+			if (position != null) 
 			{
+				// Enlève les anciennes routes
+				mapView.getOverlays().clear();
+				
 				// On calcule la route
 				PathOverlay po = new PathOverlay(Color.RED, context);
 				YOURSRoute yr = new YOURSRoute();
-				ArrayList<double[]> al = yr.calculateRoute(lastLocation, null);
+				ArrayList<double[]> al = yr.calculateRoute(position, null);
 				// Pour chaque point
 				for (int i = 0; i < al.size(); i++) 
 				{
@@ -55,21 +64,18 @@ public class RouteThread extends Thread
 
 				// On ajoute un location overlay, et on dessine
 				// (Marqueur)
-				GeoPoint locGeoPoint = new GeoPoint(
-						lastLocation.getLatitude(),
-						lastLocation.getLongitude());
+				GeoPoint locGeoPoint = new GeoPoint(position.getLatitude(), position.getLongitude());
 				SimpleLocationOverlay oi = new SimpleLocationOverlay(context);
 				oi.setLocation(locGeoPoint);
 				oi.draw(new Canvas(), mapView, false);
 				ArrayList<SimpleLocationOverlay> overlayItemArray = new ArrayList<SimpleLocationOverlay>();
 				overlayItemArray.add(oi);
 				mapView.getOverlays().addAll(0,	overlayItemArray);
-			} 
+			}
 			else // Lecture position impossible
 			{
 				Log.d("MONTAG", "ERROR");
 			}
-
 		} 
 		catch (IOException e) 
 		{

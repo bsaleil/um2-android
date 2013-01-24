@@ -7,17 +7,21 @@ import org.osmdroid.views.MapView;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class CustomMapActivity extends Activity
 {
 	private MapView mapView;
 	private MapController mapController;
 	private LocationManager locationManager;
+	private RouteThread routeThread;
+	private String currentProvider;
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -28,8 +32,16 @@ public class CustomMapActivity extends Activity
 		initializeMap();
 		
 		// Démarrage du thread qui calcule et dessine la route et le marqueur
-		RouteThread rt = new RouteThread(mapView, this);
-		rt.start();
+		currentProvider = LocationManager.GPS_PROVIDER;
+		Location position = locationManager.getLastKnownLocation(currentProvider);
+		if(position == null)
+		{
+			currentProvider = LocationManager.NETWORK_PROVIDER;
+			position = locationManager.getLastKnownLocation(currentProvider);	
+		}
+		
+		routeThread = new RouteThread(mapView, this, position);
+		routeThread.start();
 	}
 	
 	// Initialise l'affichage de la map
@@ -52,10 +64,35 @@ public class CustomMapActivity extends Activity
 		mapView.setUseDataConnection(true);
 	}
 	
+	public void listenerLocation()
+	{
+		// Define a listener that responds to location updates
+		LocationListener locationListener = new LocationListener() 
+		{
+			public void onLocationChanged(Location location) 
+			{
+				// Called when a new location is found by the network location provider.
+				routeThread.setPosition(location);
+				routeThread.start();
+				
+				Toast.makeText(getApplicationContext(), "Position : "+location.toString(), Toast.LENGTH_SHORT).show();
+			}
+
+		    public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+		    public void onProviderEnabled(String provider) {}
+
+		    public void onProviderDisabled(String provider) {}
+		  };
+
+		// Register the listener with the Location Manager to receive location updates
+		locationManager.requestLocationUpdates(currentProvider, 0, 0, locationListener);
+	}
+	
 	// Listener du click sur le bouton focus du menu
 	public void onFocusClick(MenuItem item)
 	{
-		Location lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		Location lastLocation = locationManager.getLastKnownLocation(currentProvider);
 		if(lastLocation != null)
 		{
 			GeoPoint locGeoPoint = new GeoPoint(lastLocation.getLatitude(), lastLocation.getLongitude());
