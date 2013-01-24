@@ -64,6 +64,12 @@ public class CustomMapActivity extends Activity
 		mapView.setUseDataConnection(true);
 	}
 	
+	public void initializeDB()
+	{
+		// Remplie la base de données
+		
+	}
+	
 	public void listenerLocation()
 	{
 		// Define a listener that responds to location updates
