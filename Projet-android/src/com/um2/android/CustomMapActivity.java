@@ -1,15 +1,20 @@
 package com.um2.android;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +35,10 @@ public class CustomMapActivity extends Activity
 		super.onCreate(savedInstanceState);
 				
 		initializeMap();
+		
+		// On récupère les batiments
+		ArrayList<Building> bRet = new ArrayList<Building>();
+		bRet = BuildingCsvReader.readFile("coordonnees",this.getAssets());
 		
 		// Démarrage du thread qui calcule et dessine la route et le marqueur
 		currentProvider = LocationManager.GPS_PROVIDER;
