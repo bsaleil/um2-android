@@ -7,14 +7,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class BuildingsDB extends SQLiteOpenHelper
 {
-	private static final String DB_BUILDINGS = "buildings";
-	private static final String COL_ID = "ID";
-	private static final String COL_ISBN = "ISBN";
-	private static final String COL_TITRE = "Titre";
- 
-	private static final String CREATE_BDD = "CREATE TABLE " + DB_BUILDINGS + " ("
-	+ COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COL_ISBN + " TEXT NOT NULL, "
-	+ COL_TITRE + " TEXT NOT NULL);";
+	private static final String TABLE_BUILDINGS = "buildings";
+	private static final String ID = "id";
+	private static final String BUILDING_NUMBER = "building_number";
+	private static final String BUILDING_POINTS = "building_points";
+	
+	private static final String CREATE_BDD = "CREATE TABLE " + TABLE_BUILDINGS + " ("
+	+ ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + BUILDING_NUMBER + " text not null, "
+	+ BUILDING_POINTS +" TEXT NOT NULL );";
  
 	public BuildingsDB(Context context, String name, CursorFactory factory, int version) 
 	{
@@ -29,7 +29,7 @@ public class BuildingsDB extends SQLiteOpenHelper
  
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
 	{
-		db.execSQL("DROP TABLE " + DB_BUILDINGS + ";");
+		db.execSQL("DROP TABLE " + TABLE_BUILDINGS + ";");
 		onCreate(db);
 	}
 }
