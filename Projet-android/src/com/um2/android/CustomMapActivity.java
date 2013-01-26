@@ -6,6 +6,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -171,6 +172,17 @@ public class CustomMapActivity extends Activity
 		}
 	}
 	
+	// Listener du click sur le bouton Vocal search du menu
+	public void onAboutClick(MenuItem item)
+	{
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setTitle(R.string.apropos_menu);
+		alertDialogBuilder.setMessage("\t\t\t\tCreated by :\n\n\t\t\t Baptiste SALEIL\n\t\t\t  Julien PAGÈS\n" +
+				"\t\t   Walid BENGHABRIT\n\n\t\t\tMASTER II  AIGLE");
+		AlertDialog alertDialog = alertDialogBuilder.create();
+		alertDialog.show();
+	}
+	
 	// For 4.0.3 Compatibility
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -187,6 +199,10 @@ public class CustomMapActivity extends Activity
                 
             case R.id.menu_vocal_search:
             	onVocalClick(item);
+                return true;
+                
+            case R.id.menu_about:
+            	onAboutClick(item);
                 return true;
                 
             default:

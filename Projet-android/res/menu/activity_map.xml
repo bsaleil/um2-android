@@ -28,4 +28,9 @@
           android:title="@string/menu_prefs"
           android:showAsAction="ifRoom|collapseActionView" />
     
+    <item android:id="@+id/menu_about"
+          android:icon="@android:drawable/ic_menu_help"
+          android:title="@string/apropos_menu"
+          android:showAsAction="ifRoom|collapseActionView" />
+    
 </menu>
