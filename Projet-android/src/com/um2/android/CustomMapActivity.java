@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
-
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -15,10 +15,14 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class CustomMapActivity extends Activity
@@ -29,6 +33,9 @@ public class CustomMapActivity extends Activity
 	private RouteThread routeThread;
 	private String currentProvider;
 	private DBController dbController;
+	protected static final int RESULT_SPEECH = 1;
+	private TextView txtText;
+	private TextToSpeech tts;
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -47,6 +54,9 @@ public class CustomMapActivity extends Activity
 		
 		// Lancement du thread de calcul de route avec le handler
 		initializeRouteThread();
+		
+		//Initialize du tts Pour la lecture vocale
+        tts = new TextToSpeech(this, null);
 	}
 	
 	// Initialise l'affichage de la map
@@ -143,6 +153,67 @@ public class CustomMapActivity extends Activity
 	{
 		Intent myIntent = new Intent(this, TabViewActivity.class);
 		startActivityForResult(myIntent, 10);
+	}
+	
+	// Listener du click sur le bouton Vocal search du menu
+	public void onVocalClick(MenuItem item)
+	{
+		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "fr-FR");
+        
+		try {
+			startActivityForResult(intent, RESULT_SPEECH);
+		} catch (ActivityNotFoundException a) {
+			Toast t = Toast.makeText(getApplicationContext(),
+					"Opps! Your device doesn't support Speech to Text",
+					Toast.LENGTH_SHORT);
+			t.show();
+		}
+	}
+	
+	// For 4.0.3 Compatibility
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        
+            case R.id.menu_list:
+            	onListClick(item);
+                return true;
+                
+            case R.id.menu_focus:
+            	onFocusClick(item);
+                return true;
+                
+            case R.id.menu_vocal_search:
+            	onVocalClick(item);
+                return true;
+                
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		switch (requestCode) {
+		
+			case RESULT_SPEECH: {
+				if (resultCode == RESULT_OK && null != data) {
+					ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+					
+					Toast t = Toast.makeText(getApplicationContext(),
+							text.get(0),
+							Toast.LENGTH_SHORT);
+					t.show();
+					// Speak
+					tts.speak(text.get(0), TextToSpeech.QUEUE_FLUSH, null);
+			        }
+				}
+				break;
+		}	
 	}
 	
 	// Menu
