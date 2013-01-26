@@ -9,6 +9,7 @@ import org.osmdroid.views.MapView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 public class CustomMapActivity extends Activity
@@ -107,6 +109,13 @@ public class CustomMapActivity extends Activity
 			GeoPoint locGeoPoint = new GeoPoint(lastLocation.getLatitude(), lastLocation.getLongitude());
 			mapController.setCenter(locGeoPoint);
 		}
+	}
+	
+	// Listener du click sur le bouton liste du menu
+	public void onListClick(MenuItem item)
+	{
+		Intent myIntent = new Intent(this, TabViewActivity.class);
+        startActivityForResult(myIntent, 0);
 	}
 	
 	// Menu

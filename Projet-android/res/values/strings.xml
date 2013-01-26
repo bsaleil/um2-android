@@ -2,10 +2,16 @@
 <resources>
 
     <string name="app_name">Projet-android</string>
-   
     <string name="menu_search">Search</string>
     <string name="menu_focus">Focus</string>
     <string name="menu_prefs">Preferences</string>
     <string name="menu_list">Places</string>
-
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    
+	
+    <!-- Vue liste des batiments -->
+    <string name="title_activity_building_list">BuildingListActivity</string>
+    <string name="tab_title_building">Buildings</string>
+    <string name="tab_title_other">Others</string>
 </resources>

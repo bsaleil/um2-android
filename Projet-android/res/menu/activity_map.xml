@@ -15,7 +15,8 @@
     <item android:id="@+id/menu_list"
           android:icon="@android:drawable/ic_menu_myplaces"
           android:title="@string/menu_list"
-          android:showAsAction="ifRoom|collapseActionView" />
+          android:showAsAction="ifRoom|collapseActionView"
+          android:onClick="onListClick" />
     
     <item android:id="@+id/menu_prefs"
           android:icon="@android:drawable/ic_menu_preferences"
