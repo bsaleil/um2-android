@@ -8,11 +8,8 @@ import org.osmdroid.views.MapView;
 
 import android.app.Activity;
 import android.content.Context;
-<<<<<<< HEAD
 import android.content.Intent;
 import android.content.res.AssetManager;
-=======
->>>>>>> e26eb1cdbb575110c3cee7479bb56054dc1f7d75
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
