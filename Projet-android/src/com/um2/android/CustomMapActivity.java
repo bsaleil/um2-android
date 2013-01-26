@@ -112,10 +112,8 @@ public class CustomMapActivity extends Activity
 			public void onLocationChanged(Location location) 
 			{
 				// Called when a new location is found by the network location provider.
-				routeThread.setPosition(location);
-				routeThread.start();
-				
-				Toast.makeText(getApplicationContext(), "Position : "+location.toString(), Toast.LENGTH_SHORT).show();
+				routeThread.setPosition(location);				
+				//Toast.makeText(getApplicationContext(), "Position : "+location.toString(), Toast.LENGTH_SHORT).show();
 			}
 
 		    public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -145,16 +143,6 @@ public class CustomMapActivity extends Activity
 	{
 		Intent myIntent = new Intent(this, TabViewActivity.class);
 		startActivityForResult(myIntent, 10);
-	}
-	
-	// Listener appelé lorsqu'une activity de termine
-	public void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		if (requestCode == 10) // Si l'activité est la vue en liste
-		{
-			// On définit le nouveau batiment sélectionné
-			routeThread.setTargetBuilding(((UM2Application)getApplication()).getTargetBuilding());
-		}
 	}
 	
 	// Menu
