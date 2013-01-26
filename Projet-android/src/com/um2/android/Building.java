@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import org.osmdroid.util.GeoPoint;
 
-
 public class Building
 {
 	// Numero du batiment
-	int number;
+	private int number;
+	
 	// Liste des coordonnees du batiment
 	ArrayList<GeoPoint> points;
 	
@@ -41,5 +41,25 @@ public class Building
 		String r = "Batiment : " + String.valueOf(number) + " ";
 		for (int i=0; i<points.size(); i++) { r+=points.get(i).toString(); };
 		return r;
+	}
+	
+	public int getNumber()
+	{
+		return number;
+	}
+	
+	public void setNumber(int n)
+	{
+		number = n;
+	}
+	
+	public ArrayList<GeoPoint> getPoints()
+	{
+		return points;
+	}
+	
+	public void setPoints(ArrayList<GeoPoint> a)
+	{
+		points = a;
 	}
 }

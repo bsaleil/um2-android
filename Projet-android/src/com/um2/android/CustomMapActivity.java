@@ -1,6 +1,5 @@
 package com.um2.android;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.osmdroid.util.GeoPoint;
@@ -9,8 +8,11 @@ import org.osmdroid.views.MapView;
 
 import android.app.Activity;
 import android.content.Context;
+<<<<<<< HEAD
 import android.content.Intent;
 import android.content.res.AssetManager;
+=======
+>>>>>>> e26eb1cdbb575110c3cee7479bb56054dc1f7d75
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -40,7 +42,10 @@ public class CustomMapActivity extends Activity
 		
 		// On récupère les batiments
 		ArrayList<Building> bRet = new ArrayList<Building>();
-		bRet = BuildingCsvReader.readFile("coordonnees",this.getAssets());
+		bRet = BuildingCsvReader.readFile("coordonnees", this.getAssets());
+		
+		// Remplissage de la BDD
+		initializeDB(bRet);
 		
 		// Démarrage du thread qui calcule et dessine la route et le marqueur
 		currentProvider = LocationManager.GPS_PROVIDER;
@@ -73,6 +78,24 @@ public class CustomMapActivity extends Activity
 		mapController.setCenter(new GeoPoint(43.6315843, 3.8612323));
 		// Charger la carte en ligne : passer à false pour charger en local uniquement
 		mapView.setUseDataConnection(true);
+	}
+	
+	// Remplir la base de données avec les batiments, et faire un test
+	public void initializeDB(ArrayList<Building> buildings)
+	{
+		DBController dbController = new DBController(this);
+		dbController.open();
+		
+		for (Building b : buildings)
+		{
+			dbController.insertBuilding(b);
+		}
+		
+		// TODO : à lier avec la recherche de batiment
+		Building b = dbController.getBuildingWithNumber(1);
+		
+		// Problèmes de formats, il y a des entiers sans virgule
+		Log.d("DEBUG", b.getNumber() + ":"+b.getPoints().toString());
 	}
 	
 	public void listenerLocation()
