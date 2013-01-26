@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import org.osmdroid.util.GeoPoint;
 
@@ -76,6 +77,18 @@ public class DBController
 		return bdd.insert(TABLE_BUILDINGS, null, values);
 	}
 	
+	// Indique si la base de données existe et est remplie
+	public boolean databaseEmpty()
+	{
+		if(bdd.getAttachedDbs().size() > 0)
+		{
+			Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_NUMBER, BUILDING_POINTS}, null, null, null, null, null);
+			if(c.getCount() == 0)
+				return true;
+		}
+		return false;
+	}
+	
 	public Building getBuildingWithNumber(int n)
 	{
 		Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_NUMBER, BUILDING_POINTS}, BUILDING_NUMBER + " LIKE \"" + n +"\"", null, null, null, null);
@@ -86,7 +99,7 @@ public class DBController
 	{
 		ArrayList<Building> res = new ArrayList<Building>();
 		Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_NUMBER, BUILDING_POINTS}, null, null, null, null, null);
-		
+
 		for(int i=0; i<c.getCount(); i++)
 		{
 			c.moveToPosition(i);

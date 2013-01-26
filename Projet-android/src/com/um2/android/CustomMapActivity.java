@@ -26,6 +26,7 @@ public class CustomMapActivity extends Activity
 	private LocationManager locationManager;
 	private RouteThread routeThread;
 	private String currentProvider;
+	private DBController dbController;
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -78,16 +79,15 @@ public class CustomMapActivity extends Activity
 	// Remplir la base de données avec les batiments
 	public void initializeDB(ArrayList<Building> buildings)
 	{
-		DBController dbController = new DBController(this);
+		dbController = new DBController(this);
 		dbController.open();
 		
-		for (Building b : buildings)
+		// Si la BD semble vide, on la remplie
+		if(dbController.databaseEmpty())
 		{
-			dbController.insertBuilding(b);
+			for(Building b : buildings)
+				dbController.insertBuilding(b);
 		}
-		
-		// TODO : pour baptiste
-		Log.d("DEBUG", dbController.getAllBuidings().toString());
 	}
 	
 	public void listenerLocation()
@@ -139,5 +139,10 @@ public class CustomMapActivity extends Activity
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_map, menu);
 		return true;
+	}
+	
+	public DBController getDbController()
+	{
+		return dbController;
 	}
 }
