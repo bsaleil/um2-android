@@ -133,16 +133,17 @@ public class CustomMapActivity extends Activity
 		startActivityForResult(myIntent, 0);
 	}
 	
+	// Listener du click sur le bouton focus du menu
+	public void testSearch(MenuItem item)
+	{
+		Log.d("DEBUG", "a été cliqué ");
+	}
+	
 	// Menu
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_map, menu);
 		return true;
-	}
-	
-	public DBController getDbController()
-	{
-		return dbController;
 	}
 }
