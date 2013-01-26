@@ -9,7 +9,6 @@ import org.osmdroid.views.MapView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 public class CustomMapActivity extends Activity
@@ -77,7 +75,7 @@ public class CustomMapActivity extends Activity
 		mapView.setUseDataConnection(true);
 	}
 	
-	// Remplir la base de données avec les batiments, et faire un test
+	// Remplir la base de données avec les batiments
 	public void initializeDB(ArrayList<Building> buildings)
 	{
 		DBController dbController = new DBController(this);
@@ -88,11 +86,8 @@ public class CustomMapActivity extends Activity
 			dbController.insertBuilding(b);
 		}
 		
-		// TODO : à lier avec la recherche de batiment
-		Building b = dbController.getBuildingWithNumber(1);
-		
-		// Problèmes de formats, il y a des entiers sans virgule
-		Log.d("DEBUG", b.getNumber() + ":"+b.getPoints().toString());
+		// TODO : pour baptiste
+		Log.d("DEBUG", dbController.getAllBuidings().toString());
 	}
 	
 	public void listenerLocation()
@@ -135,7 +130,7 @@ public class CustomMapActivity extends Activity
 	public void onListClick(MenuItem item)
 	{
 		Intent myIntent = new Intent(this, TabViewActivity.class);
-        startActivityForResult(myIntent, 0);
+		startActivityForResult(myIntent, 0);
 	}
 	
 	// Menu

@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import org.osmdroid.util.GeoPoint;
 
 public class DBController 
@@ -17,7 +18,6 @@ public class DBController
 	private static final int DB_VERSION = 1;
 	private static final String DB_NAME = "buildings.db";
 	private static final String TABLE_BUILDINGS = "buildings";
-	private static final String ID = "id";
 	private static final String BUILDING_NUMBER = "building_number";
 	private static final String BUILDING_POINTS = "building_points";
 	
@@ -81,7 +81,32 @@ public class DBController
 		Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_NUMBER, BUILDING_POINTS}, BUILDING_NUMBER + " LIKE \"" + n +"\"", null, null, null, null);
 		return cursorToBuilding(c);
 	}
+	
+	public ArrayList<Building> getAllBuidings()
+	{
+		ArrayList<Building> res = new ArrayList<Building>();
+		Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_NUMBER, BUILDING_POINTS}, null, null, null, null, null);
+		
+		for(int i=0; i<c.getCount(); i++)
+		{
+			c.moveToPosition(i);
+			Building b = specificCursorToBuilding(c);
+			if(b != null)
+				res.add(b);
+		}
+		c.close();
+		return res;
+	}
 
+	// À partir d'un curseur spécifique retourne un batiment
+	private Building specificCursorToBuilding(Cursor c)
+	{
+		if (c.getCount() == 0)
+			return null;
+		
+		return buildingFromCursor(c);
+	}
+	
 	//Cette méthode permet de convertir un cursor en un batiment
 	private Building cursorToBuilding(Cursor c)
 	{
@@ -91,6 +116,15 @@ public class DBController
  
 		//Sinon on se place sur le premier élément
 		c.moveToFirst();
+		Building b = buildingFromCursor(c);
+		
+		//On ferme le cursor
+		c.close();
+		return b;
+	}
+
+	private Building buildingFromCursor(Cursor c) 
+	{
 		Building b = new Building();
 		
 		//on lui affecte toutes les infos grâce aux infos contenues dans le Cursor
@@ -117,9 +151,6 @@ public class DBController
 		{
 			e.printStackTrace();
 		}
-		
-		//On ferme le cursor
-		c.close();
 		return b;
 	}
 }
