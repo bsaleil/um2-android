@@ -13,6 +13,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,17 +45,8 @@ public class CustomMapActivity extends Activity
 		// Remplissage de la BDD
 		initializeDB(bRet);
 		
-		// Démarrage du thread qui calcule et dessine la route et le marqueur
-		currentProvider = LocationManager.GPS_PROVIDER;
-		Location position = locationManager.getLastKnownLocation(currentProvider);
-		if(position == null)
-		{
-			currentProvider = LocationManager.NETWORK_PROVIDER;
-			position = locationManager.getLastKnownLocation(currentProvider);	
-		}
-		
-		routeThread = new RouteThread(mapView, this, position);
-		routeThread.start();
+		// Lancement du thread de calcul de route avec le handler
+		initializeRouteThread();
 	}
 	
 	// Initialise l'affichage de la map
@@ -74,6 +67,27 @@ public class CustomMapActivity extends Activity
 		mapController.setCenter(new GeoPoint(43.6315843, 3.8612323));
 		// Charger la carte en ligne : passer à false pour charger en local uniquement
 		mapView.setUseDataConnection(true);
+	}
+	
+	public void initializeRouteThread()
+	{
+		// Démarrage du thread qui calcule et dessine la route et le marqueur
+		currentProvider = LocationManager.GPS_PROVIDER;
+		Location position = locationManager.getLastKnownLocation(currentProvider);
+		if(position == null)
+		{
+			currentProvider = LocationManager.NETWORK_PROVIDER;
+			position = locationManager.getLastKnownLocation(currentProvider);	
+		}
+		// Créé le handler pour mettre à jour la carte depuis le thread principal
+		Handler mHandler = new Handler() {
+	        @Override
+	        public void handleMessage(Message msg) {
+	            mapView.invalidate();
+	        }
+		};
+		routeThread = new RouteThread(mapView, this, position, mHandler);
+		routeThread.start();
 	}
 	
 	// Remplir la base de données avec les batiments
@@ -130,7 +144,17 @@ public class CustomMapActivity extends Activity
 	public void onListClick(MenuItem item)
 	{
 		Intent myIntent = new Intent(this, TabViewActivity.class);
-		startActivityForResult(myIntent, 0);
+		startActivityForResult(myIntent, 10);
+	}
+	
+	// Listener appelé lorsqu'une activity de termine
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		if (requestCode == 10) // Si l'activité est la vue en liste
+		{
+			// On définit le nouveau batiment sélectionné
+			routeThread.setTargetBuilding(((UM2Application)getApplication()).getTargetBuilding());
+		}
 	}
 	
 	// Listener du click sur le bouton focus du menu

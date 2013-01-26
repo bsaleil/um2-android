@@ -14,4 +14,5 @@
     <string name="title_activity_building_list">BuildingListActivity</string>
     <string name="tab_title_building">Buildings</string>
     <string name="tab_title_other">Others</string>
+    <string name="building">Building</string>
 </resources>

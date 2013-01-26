@@ -8,7 +8,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+import org.osmdroid.util.GeoPoint;
+
 import android.location.Location;
+import android.util.Log;
 
 // Cette classe permet d'interroger l'API YOUR pour obtenir une route entre 2 points, en mode piéton
 public class YOURSRoute
@@ -22,13 +25,15 @@ public class YOURSRoute
 	String endLat = "43.633156";		// End point latitude
 	String endLon = "3.864269";		// End point latitude
 	
-	public YOURSRoute()
+	public YOURSRoute(GeoPoint target)
 	{
+		endLat = String.valueOf(target.getLatitudeE6() / 1e6);
+		endLon = String.valueOf(target.getLongitudeE6() / 1e6);
 	}
 	
 	// Calcule and return route from point to other point
 	public ArrayList<double[]> calculateRoute(Location from, Location to) throws IOException
-	{
+	{		
 		// Build query
 		String query = service;
 		query += "format=" + format;
