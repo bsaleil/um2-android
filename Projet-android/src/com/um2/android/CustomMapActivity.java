@@ -46,7 +46,8 @@ public class CustomMapActivity extends Activity
 	private TextToSpeech tts;
 	private String previousMSG = "";
 	private int timer = 0;
-
+	private Context self = null;
+	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		// TODO : Gérer la MAJ de la route + marqueur dans le thread
@@ -73,6 +74,8 @@ public class CustomMapActivity extends Activity
 
 		// Initialize du tts Pour la lecture vocale
 		tts = new TextToSpeech(this, null);
+		
+		self = this;
 		
 	}
 
@@ -121,7 +124,7 @@ public class CustomMapActivity extends Activity
 	            {
 		            if(msg.getData().get("DESCRIPTION") != null)
 		            {
-		            	if(!msg.getData().get("DESCRIPTION").equals(previousMSG) || timer>6)
+		            	if(!msg.getData().get("DESCRIPTION").equals(previousMSG) || timer>60)
 		            	{
 		            		previousMSG = msg.getData().get("DESCRIPTION").toString();
 		            		tts.speak(previousMSG, TextToSpeech.QUEUE_FLUSH, null);
@@ -284,11 +287,28 @@ public class CustomMapActivity extends Activity
 					ArrayList<String> text = data
 							.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-					Toast t = Toast.makeText(getApplicationContext(),
+					/*Toast t = Toast.makeText(getApplicationContext(),
 							text.get(0), Toast.LENGTH_SHORT);
 					t.show();
 					// Speak
 					tts.speak(text.get(0), TextToSpeech.QUEUE_FLUSH, null);
+					*/
+					Building b =  search(text.get(0));
+					Toast t;
+					if (b == null)
+					{
+						Log.d("DEBUG", "Aucun résultat");
+						t = Toast.makeText(getApplicationContext(),"Aucun résultat", Toast.LENGTH_SHORT);
+						t.show();
+						tts.speak("Aucun résultat", TextToSpeech.QUEUE_FLUSH, null);
+					}
+					else
+					{
+					    ((UM2Application) getApplication()).setTargetBuilding(b);
+					    t = Toast.makeText(getApplicationContext(),b.getName(this), Toast.LENGTH_SHORT);
+						t.show();
+						tts.speak(b.getName(this), TextToSpeech.QUEUE_FLUSH, null);
+					}
 				}
 			}
 				break;
@@ -316,28 +336,23 @@ public class CustomMapActivity extends Activity
 
 			public boolean onQueryTextSubmit(String query)
 			{
-				// Envoie le texte tappé au dbController
-				Scanner scanner = new Scanner(query);
-				int bat = -1;
 				
-				while(scanner.hasNext())
+				Building b =  search(query);
+				Toast t;
+				if (b == null)
 				{
-					if(scanner.hasNextInt())
-						bat = scanner.nextInt();
-					else
-						scanner.next();
-				}
-				
-				if(bat != -1)
-				{
-					Building b = dbController.getBuildingWithNumber(bat);
-					if (b == null)
-						Log.d("DEBUG", "Aucun résultat");
-					else
-					    	((UM2Application) getApplication()).setTargetBuilding(b);
+					Log.d("DEBUG", "Aucun résultat");
+					t = Toast.makeText(getApplicationContext(),"Aucun résultat", Toast.LENGTH_SHORT);
+					t.show();
+					tts.speak("Aucun résultat", TextToSpeech.QUEUE_FLUSH, null);
 				}
 				else
-					Log.d("DEBUG", "Aucun résultat");
+				{
+				    ((UM2Application) getApplication()).setTargetBuilding(b);
+				    t = Toast.makeText(getApplicationContext(),b.getName(self), Toast.LENGTH_SHORT);
+					t.show();
+					tts.speak(b.getName(self), TextToSpeech.QUEUE_FLUSH, null);
+				}
 				
 				return true;
 			}
@@ -345,5 +360,67 @@ public class CustomMapActivity extends Activity
 
 		 searchView.setOnQueryTextListener(queryTextListener);
 		return true;
+	}
+	
+	// Fonction de recherche
+	private Building search(String query)
+	{
+		Building b = null ;
+		
+	
+		// Traitement des mots clès
+		query = query.toLowerCase();
+		
+		Toast t = Toast.makeText(getApplicationContext(),query, Toast.LENGTH_SHORT);
+		t.show();
+		
+		
+		if(query.startsWith("1") || query.startsWith("2") || query.startsWith("3")
+				 || query.startsWith("4")  || query.startsWith("5")){
+			return dbController.getBuildingWithNumber(Integer.parseInt(query));
+		}
+
+		if(query.startsWith("bâtiment")){
+			return dbController.getBuildingWithNumber(Integer.parseInt(query.substring(9)));
+		}
+		
+		if(query.startsWith("bate")){
+			return dbController.getBuildingWithNumber(Integer.parseInt(query.substring(4)));
+		}
+		
+		
+		if(query.equals("polytech")){
+			return dbController.getBuildingWithNumber(31);
+		}
+		
+		if(query.equals("resto u") || query.equals("rue") || query.equals("r u") || query.equals("ru") || 
+			query.equals("resto universitaire") || query.equals("restaurant universitaire")   ){
+			return dbController.getBuildingWithNumber(101);
+		}
+		
+		if(query.equals("café") || query.equals("t'as fait") || query.equals("ca fait") || 
+				query.equals("caféteria") || query.equals("caffet")){
+				return dbController.getBuildingWithNumber(102);
+		}
+		
+		if(query.equals("csu") || query.equals("centre sportif") || query.equals("sport") ||
+				query.equals("sport")){
+			return dbController.getBuildingWithNumber(103);
+		}
+
+		if(query.equals("bu") || query.equals("b u") || query.equals("bibliotheque") || query.equals("bibliothèque")
+				|| query.equals("biblio")){
+			return dbController.getBuildingWithNumber(8);
+		}
+	    
+		if(query.equals("admin") || query.equals("administration")){
+			return dbController.getBuildingWithNumber(7);
+		}
+	    
+		if(query.equals("maison des étudiants")){
+			return dbController.getBuildingWithNumber(34);
+		}
+	    
+		return b;
 	}
 }
