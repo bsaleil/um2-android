@@ -36,7 +36,7 @@ public class BuildingListTab extends ListFragment
     	
     	for (int i=0; i<buildings.size(); i++)
     	{
-    		listItems.add(getActivity().getString(R.string.building) + " " + buildings.get(i).getNumber());
+    		listItems.add(buildings.get(i).getName(this.getActivity()));
     	}
     	
         setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listItems));

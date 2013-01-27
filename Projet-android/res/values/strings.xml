@@ -16,5 +16,8 @@
     <string name="tab_title_other">Others</string>
     <string name="building">Building</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="resto_u">Cafeteria</string>
+    <string name="cafeteria">Cafeteria</string>
+    <string name="CSU">University Sports Centre (CSU)</string>
 
 </resources>

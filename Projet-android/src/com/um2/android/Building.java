@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.osmdroid.util.GeoPoint;
 
+import android.content.Context;
+
 public class Building
 {
 	// Numero du batiment
@@ -40,6 +42,33 @@ public class Building
 	{
 		String r = "Batiment : " + String.valueOf(number) + " ";
 		for (int i=0; i<points.size(); i++) { r+=points.get(i).toString(); };
+		return r;
+	}
+	
+	public String getName(Context c) // Besoin du context pour lire dans "strings"
+	{
+		String r = "";
+		if (number < 101) // "Batiment XX"
+		{
+			
+			r = c.getString(R.string.building);
+			r += " " + String.valueOf(number);
+			if (number == 31) r+= " Polytech"; // Si 100 on ajoute "polytech"
+		}
+		else if (number == 101) // RU triolet
+		{
+			r = c.getString(R.string.resto_u);
+			r += " Triolet";
+		}
+		else if (number == 102) // Cafet
+		{
+			r = c.getString(R.string.cafeteria);
+		}
+		else if (number == 103)
+		{
+			r = c.getString(R.string.CSU);
+		}
+		
 		return r;
 	}
 	
