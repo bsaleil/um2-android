@@ -12,7 +12,6 @@
         android:key="fichier_ics"
         android:title="@string/fichier_ics"
         android:singleLine="true"
-        android:dependency="activer_ics"
         android:defaultValue="schedule.ics" />
         
 </PreferenceScreen>

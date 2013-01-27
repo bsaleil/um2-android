@@ -1,7 +1,26 @@
 package com.um2.android;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Scanner;
 
+import net.fortuna.ical4j.data.CalendarBuilder;
+import net.fortuna.ical4j.data.ParserException;
+import net.fortuna.ical4j.filter.Filter;
+import net.fortuna.ical4j.filter.PeriodRule;
+import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.Component;
+import net.fortuna.ical4j.model.DateTime;
+import net.fortuna.ical4j.model.Dur;
+import net.fortuna.ical4j.model.Period;
+import net.fortuna.ical4j.model.component.VEvent;
+
+import org.apache.james.mime4j.parser.Event;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
@@ -17,6 +36,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -57,7 +77,7 @@ public class CustomMapActivity extends Activity
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		
 		initializeMap();
-
+		
 		// On récupère les batiments
 		ArrayList<Building> bRet = new ArrayList<Building>();
 		bRet = BuildingCsvReader.readFile("coordonnees2", this.getAssets());
@@ -69,6 +89,10 @@ public class CustomMapActivity extends Activity
 		
 		// Remplir la BDD
 		initializeDB(bRet);
+		
+		// Calculer l'itineraire si itineraire automatique activé
+		automaticGuidance();
+
 		
 		// Lancement du thread de calcul de route avec le handler
 		initializeRouteThread();
@@ -153,6 +177,19 @@ public class CustomMapActivity extends Activity
 		}
 	}
 	
+	// Calcule la route vers le batiment du prochain cours si activé
+	public void automaticGuidance()
+	{
+		boolean ics_actif = preferences.getBoolean(SettingsFragment.ACTIVER_ICS, true);
+		if (ics_actif) // Si le guidage automatique est active, on cherche le prochaine batiment
+		{
+			ICSReader icsR = new ICSReader(this,preferences);
+			Building b = icsR.getNextBuilding();
+			if (b != null)
+				((UM2Application)getApplication()).setTargetBuilding(b);
+		}
+	}
+
 	public void listenerLocation()
 	{
 		// Define a listener that responds to location updates

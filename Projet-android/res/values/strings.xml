@@ -14,6 +14,7 @@
     <string name="title_activity_building_list">Bâtiments</string>
     <string name="tab_title_building">Bâtiments</string>
     <string name="tab_title_other">Autres</string>
+    <string name="tab_title_schedule">Planning</string>
     <string name="building">Bâtiment</string>
     <string name="title_activity_search">Recherche</string>
     <string name="resto_u">Restaurant Universitaire</string>
@@ -25,5 +26,7 @@
     <string name="guidage_vocal">Guidage vocal</string>
     <string name="activer_ics">Activer guidage automatique</string>
     <string name="fichier_ics">Fichier de calendrier</string>
+    <string name="attention">Attention !</string>
+    <string name="fichier_inexistant">Le fichier n\'existe pas.\nMettez le à la raçine de la carte SD.</string>
     
 </resources>

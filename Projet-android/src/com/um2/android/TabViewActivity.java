@@ -30,13 +30,19 @@ public class TabViewActivity extends Activity
 				BuildingListTab.class);
 		tab.setTabListener(tl);
 		actionBar.addTab(tab);
-
-		String label2 = getResources().getString(R.string.tab_title_other);
+		
+		String label2 = getResources().getString(R.string.tab_title_schedule);
 		tab = actionBar.newTab();
 		tab.setText(label2);
-		TabListener<OtherListTab> tl2 = new TabListener<OtherListTab>(this, label2,
-				OtherListTab.class);
+		TabListener<ScheduleTab> tl2 = new TabListener<ScheduleTab>(this, label2, ScheduleTab.class);
 		tab.setTabListener(tl2);
+		actionBar.addTab(tab);
+		
+		String label3 = getResources().getString(R.string.tab_title_other);
+		tab = actionBar.newTab();
+		tab.setText(label3);
+		TabListener<OtherListTab> tl3 = new TabListener<OtherListTab>(this, label3,OtherListTab.class);
+		tab.setTabListener(tl3);
 		actionBar.addTab(tab);
 	}
 
