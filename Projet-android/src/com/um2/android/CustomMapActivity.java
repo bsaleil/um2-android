@@ -325,7 +325,7 @@ public class CustomMapActivity extends Activity
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
 		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-		
+
 		final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener()
 		{
 			public boolean onQueryTextChange(String newText)
@@ -336,24 +336,25 @@ public class CustomMapActivity extends Activity
 
 			public boolean onQueryTextSubmit(String query)
 			{
-				
-				Building b =  search(query);
+				Building b = search(query);
 				Toast t;
 				if (b == null)
 				{
 					Log.d("DEBUG", "Aucun résultat");
-					t = Toast.makeText(getApplicationContext(),"Aucun résultat", Toast.LENGTH_SHORT);
+					t = Toast.makeText(getApplicationContext(),
+							"Aucun résultat", Toast.LENGTH_SHORT);
 					t.show();
 					tts.speak("Aucun résultat", TextToSpeech.QUEUE_FLUSH, null);
-				}
+				} 
 				else
 				{
-				    ((UM2Application) getApplication()).setTargetBuilding(b);
-				    t = Toast.makeText(getApplicationContext(),b.getName(self), Toast.LENGTH_SHORT);
+					((UM2Application) getApplication()).setTargetBuilding(b);
+					t = Toast.makeText(getApplicationContext(),
+							b.getName(self), Toast.LENGTH_SHORT);
 					t.show();
 					tts.speak(b.getName(self), TextToSpeech.QUEUE_FLUSH, null);
 				}
-				
+
 				return true;
 			}
 		};
