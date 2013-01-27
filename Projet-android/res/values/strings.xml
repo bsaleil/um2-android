@@ -2,15 +2,16 @@
 <resources>
 
     <string name="app_name">Projet-android</string>
-    <string name="menu_search">Search</string>
+    <string name="menu_search">Recherche</string>
     <string name="menu_focus">Focus</string>
-    <string name="menu_prefs">Preferences</string>
-    <string name="menu_list">Places</string>
+    <string name="menu_prefs">Préférences</string>
+    <string name="menu_list">Emplacements</string>
     <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
-    <string name="apropos_menu">About</string>
+    <string name="menu_settings">Paramètres</string>
+    <string name="apropos_menu">À propos</string>
 
     <!-- Vue liste des batiments -->
+<<<<<<< HEAD
     <string name="title_activity_building_list">Buildings</string>
     <string name="tab_title_building">Buildings</string>
     <string name="tab_title_schedule">Schedule</string>
@@ -28,5 +29,21 @@
     <string name="fichier_ics">Schedule file</string>
     <string name="attention">Warning !</string>
     <string name="fichier_inexistant">File does not currently exist.\nPut it on root of SD card.</string>
+=======
+    <string name="title_activity_building_list">Bâtiments</string>
+    <string name="tab_title_building">Bâtiments</string>
+    <string name="tab_title_other">Autres</string>
+    <string name="building">Bâtiment</string>
+    <string name="title_activity_search">Recherche</string>
+    <string name="resto_u">Restaurant Universitaire</string>
+    <string name="cafeteria">Cafétéria</string>
+    <string name="CSU">Centre Sportif Universitaire (CSU)</string>
+
+    <!-- Préférences -->
+    <string name="title_activity_preferences">Préférences</string>
+    <string name="guidage_vocal">Guidage vocal</string>
+    <string name="activer_ics">Activer guidage automatique</string>
+    <string name="fichier_ics">Fichier de calendrier</string>
+>>>>>>> 87f9ed280c462f1e18a4cb3e483329767552e66d
     
 </resources>

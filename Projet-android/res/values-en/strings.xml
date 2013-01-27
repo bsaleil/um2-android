@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Projet-android</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_focus">Focus</string>
+    <string name="menu_prefs">Preferences</string>
+    <string name="menu_list">Places</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="apropos_menu">About</string>
+
+    <!-- Vue liste des batiments -->
+    <string name="title_activity_building_list">Buildings</string>
+    <string name="tab_title_building">Buildings</string>
+    <string name="tab_title_other">Others</string>
+    <string name="building">Building</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="resto_u">Cafeteria</string>
+    <string name="cafeteria">Cafeteria</string>
+    <string name="CSU">University Sports Centre (CSU)</string>
+
+    <!-- Préférences -->
+    <string name="title_activity_preferences">Preferences</string>
+    <string name="guidage_vocal">Voice guidance</string>
+    <string name="activer_ics">Enable automatic guidance</string>
+    <string name="fichier_ics">Schedule file</string>
+</resources>
