@@ -48,7 +48,7 @@ public class CustomMapActivity extends Activity
 		
 		// On récupère les batiments
 		ArrayList<Building> bRet = new ArrayList<Building>();
-		bRet = BuildingCsvReader.readFile("coordonnees", this.getAssets());
+		bRet = BuildingCsvReader.readFile("coordonnees2", this.getAssets());
 		
 		// Remplissage de la BDD
 		initializeDB(bRet);

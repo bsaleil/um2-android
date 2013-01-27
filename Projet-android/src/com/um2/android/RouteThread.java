@@ -66,7 +66,7 @@ public class RouteThread extends Thread
 				// On calcule la route
 				PathOverlay po = new PathOverlay(Color.RED, context);
 				YOURSRoute yr = new YOURSRoute(targetBuilding.getPoints().get(0));
-				ArrayList<double[]> al = yr.calculateRoute(position, null);
+				ArrayList<double[]> al = yr.calculateRoute(position);
 				// Pour chaque point
 				for (int i = 0; i < al.size(); i++) 
 				{
