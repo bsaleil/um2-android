@@ -39,6 +39,9 @@
             android:name="com.um2.android.SettingsActivity"
             android:label="@string/title_activity_preferences">
         </activity>
+        
+        <provider android:name="com.um2.android.MySuggestionProvider"
+                  android:authorities="com.um2.android.MySuggestionProvider" />
     </application>
 
 </manifest>
