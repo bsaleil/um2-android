@@ -1,15 +1,14 @@
 package com.um2.android;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 
-import android.R.menu;
 import android.app.Activity;
 import android.app.SearchManager;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -27,7 +26,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,8 +54,8 @@ public class CustomMapActivity extends Activity
 
 		// On récupère les batiments
 		ArrayList<Building> bRet = new ArrayList<Building>();
-		bRet = BuildingCsvReader.readFile("coordonnees", this.getAssets());
-
+		bRet = BuildingCsvReader.readFile("coordonnees2", this.getAssets());
+		
 		// Remplissage de la BDD
 		initializeDB(bRet);
 
@@ -285,12 +283,27 @@ public class CustomMapActivity extends Activity
 			public boolean onQueryTextSubmit(String query)
 			{
 				// Envoie le texte tappé au dbController
-				Building b = dbController.getBuildingWithNumber(Integer.parseInt(query));
-
-				if (b == null)
-					Log.d("DEBUG", "Aucun résultat");
+				Scanner scanner = new Scanner(query);
+				int bat = -1;
+				
+				while(scanner.hasNext())
+				{
+					if(scanner.hasNextInt())
+						bat = scanner.nextInt();
+					else
+						scanner.next();
+				}
+				
+				if(bat != -1)
+				{
+					Building b = dbController.getBuildingWithNumber(bat);
+					if (b == null)
+						Log.d("DEBUG", "Aucun résultat");
+					else
+					    	((UM2Application) getApplication()).setTargetBuilding(b);
+				}
 				else
-				    	((UM2Application) getApplication()).setTargetBuilding(b);
+					Log.d("DEBUG", "Aucun résultat");
 				
 				return true;
 			}
