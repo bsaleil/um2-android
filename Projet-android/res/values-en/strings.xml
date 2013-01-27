@@ -14,6 +14,7 @@
     <string name="title_activity_building_list">Buildings</string>
     <string name="tab_title_building">Buildings</string>
     <string name="tab_title_other">Others</string>
+    <string name="tab_title_schedule">Schedule</string>
     <string name="building">Building</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="resto_u">Cafeteria</string>
@@ -25,4 +26,6 @@
     <string name="guidage_vocal">Voice guidance</string>
     <string name="activer_ics">Enable automatic guidance</string>
     <string name="fichier_ics">Schedule file</string>
+    <string name="attention">Warning !</string>
+    <string name="fichier_inexistant">File does not currently exist.\nPut it on root of SD card.</string>
 </resources>

@@ -49,8 +49,8 @@ public final class R {
         public static final int menu_settings=0x7f050006;
         public static final int resto_u=0x7f05000e;
         public static final int tab_title_building=0x7f050009;
-        public static final int tab_title_other=0x7f05000b;
-        public static final int tab_title_schedule=0x7f05000a;
+        public static final int tab_title_other=0x7f05000a;
+        public static final int tab_title_schedule=0x7f05000b;
         /**  Vue liste des batiments 
  Vue liste des batiments 
          */

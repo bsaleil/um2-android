@@ -11,28 +11,10 @@
     <string name="apropos_menu">À propos</string>
 
     <!-- Vue liste des batiments -->
-<<<<<<< HEAD
-    <string name="title_activity_building_list">Buildings</string>
-    <string name="tab_title_building">Buildings</string>
-    <string name="tab_title_schedule">Schedule</string>
-    <string name="tab_title_other">Others</string>
-    <string name="building">Building</string>
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="resto_u">Cafeteria</string>
-    <string name="cafeteria">Cafeteria</string>
-    <string name="CSU">University Sports Centre (CSU)</string>
-
-    <!-- Préférences -->
-    <string name="title_activity_preferences">Preferences</string>
-    <string name="guidage_vocal">Voice guidance</string>
-    <string name="activer_ics">Display route to next class at launch</string>
-    <string name="fichier_ics">Schedule file</string>
-    <string name="attention">Warning !</string>
-    <string name="fichier_inexistant">File does not currently exist.\nPut it on root of SD card.</string>
-=======
     <string name="title_activity_building_list">Bâtiments</string>
     <string name="tab_title_building">Bâtiments</string>
     <string name="tab_title_other">Autres</string>
+    <string name="tab_title_schedule">Planning</string>
     <string name="building">Bâtiment</string>
     <string name="title_activity_search">Recherche</string>
     <string name="resto_u">Restaurant Universitaire</string>
@@ -44,6 +26,7 @@
     <string name="guidage_vocal">Guidage vocal</string>
     <string name="activer_ics">Activer guidage automatique</string>
     <string name="fichier_ics">Fichier de calendrier</string>
->>>>>>> 87f9ed280c462f1e18a4cb3e483329767552e66d
+    <string name="attention">Attention !</string>
+    <string name="fichier_inexistant">Le fichier n\'existe pas.\nMettez le à la raçine de la carte SD.</string>
     
 </resources>
