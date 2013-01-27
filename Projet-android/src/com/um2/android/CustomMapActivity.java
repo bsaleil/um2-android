@@ -14,14 +14,17 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,6 +41,7 @@ public class CustomMapActivity extends Activity
 	private RouteThread routeThread;
 	private String currentProvider;
 	private DBController dbController;
+	private SharedPreferences preferences;
 	protected static final int RESULT_SPEECH = 1;
 	private TextToSpeech tts;
 	private String previousMSG = "";
@@ -52,6 +56,9 @@ public class CustomMapActivity extends Activity
 		// changement ?
 		super.onCreate(savedInstanceState);
 
+		// On récupère les préférences
+		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		
 		initializeMap();
 
 		// On récupère les batiments
@@ -66,6 +73,7 @@ public class CustomMapActivity extends Activity
 
 		// Initialize du tts Pour la lecture vocale
 		tts = new TextToSpeech(this, null);
+		
 	}
 
 	// Initialise l'affichage de la map
@@ -107,18 +115,21 @@ public class CustomMapActivity extends Activity
 	        public void handleMessage(Message msg) {
 	            mapView.invalidate();
 	            
-	         // Speak
-	            if(msg.getData().get("DESCRIPTION") != null)
+	            // Speak
+	            boolean guidageVocal = preferences.getBoolean(SettingsFragment.GUIDAGE_VOCAL, true);
+	            if (guidageVocal)
 	            {
-	            	if(!msg.getData().get("DESCRIPTION").equals(previousMSG) || timer>6)
-	            	{
-	            		previousMSG = msg.getData().get("DESCRIPTION").toString();
-	            		tts.speak(previousMSG, TextToSpeech.QUEUE_FLUSH, null);
-	            		timer=0;
-	            	}
-	            	timer++;
+		            if(msg.getData().get("DESCRIPTION") != null)
+		            {
+		            	if(!msg.getData().get("DESCRIPTION").equals(previousMSG) || timer>6)
+		            	{
+		            		previousMSG = msg.getData().get("DESCRIPTION").toString();
+		            		tts.speak(previousMSG, TextToSpeech.QUEUE_FLUSH, null);
+		            		timer=0;
+		            	}
+		            	timer++;
+		            }
 	            }
-	            
 	        }
 		};
 		routeThread = new RouteThread(mapView, this, position, mHandler);

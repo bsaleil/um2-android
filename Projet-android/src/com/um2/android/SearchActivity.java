@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 
 public class SearchActivity extends ListActivity 
-{
+{	
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
