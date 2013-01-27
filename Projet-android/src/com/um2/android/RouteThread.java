@@ -8,6 +8,7 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.PathOverlay;
 import org.osmdroid.views.overlay.SimpleLocationOverlay;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -21,13 +22,13 @@ import android.util.Log;
 // Ce thread est chargé de calculer la route depuis la position actuelle, vers un point donné
 public class RouteThread extends Thread 
 {
-	private Context context;
+	private Activity context;
 	private MapView mapView;
 	private Location position;
 	private Building targetBuilding;
 	Handler updateHandler;
 	
-	public RouteThread(MapView mv, Context c, Location l, Handler h) 
+	public RouteThread(MapView mv, Activity c, Location l, Handler h) 
 	{
 		mapView = mv;
 		context = c;
@@ -52,6 +53,9 @@ public class RouteThread extends Thread
 		{		
 			while(true)
 			{
+			// Récupère le batiment cible courant
+			targetBuilding = ((UM2Application)context.getApplication()).getTargetBuilding();
+			
 			// On récupère l'endroit ou on se trouve
 			// Si la position est nulle, ou que le batiment de destination est null, on fait rien
 			if (position != null && targetBuilding != null) 

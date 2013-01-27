@@ -7,11 +7,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-
 import org.osmdroid.util.GeoPoint;
-
 import android.location.Location;
-import android.util.Log;
 
 // Cette classe permet d'interroger l'API YOUR pour obtenir une route entre 2 points, en mode piéton
 public class YOURSRoute
