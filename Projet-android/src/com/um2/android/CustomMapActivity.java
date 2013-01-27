@@ -1,16 +1,14 @@
 package com.um2.android;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.SearchManager;
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -24,13 +22,11 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class CustomMapActivity extends Activity
@@ -65,10 +61,15 @@ public class CustomMapActivity extends Activity
 		// On récupère les batiments
 		ArrayList<Building> bRet = new ArrayList<Building>();
 		bRet = BuildingCsvReader.readFile("coordonnees2", this.getAssets());
-		
-		// Remplissage de la BDD
-		initializeDB(bRet);
 
+		// Parsing des points spéciaux (café, toilettes...)
+		ArrayList<Building> pois = new ArrayList<Building>();
+		pois = PoiCsvReader.readFile("poi", this.getAssets());
+		bRet.addAll(pois);
+		
+		// Remplir la BDD
+		initializeDB(bRet);
+		
 		// Lancement du thread de calcul de route avec le handler
 		initializeRouteThread();
 
@@ -76,7 +77,6 @@ public class CustomMapActivity extends Activity
 		tts = new TextToSpeech(this, null);
 		
 		self = this;
-		
 	}
 
 	// Initialise l'affichage de la map
@@ -152,7 +152,7 @@ public class CustomMapActivity extends Activity
 				dbController.insertBuilding(b);
 		}
 	}
-
+	
 	public void listenerLocation()
 	{
 		// Define a listener that responds to location updates
@@ -382,7 +382,7 @@ public class CustomMapActivity extends Activity
 		}
 		
 		if(query.equals("resto u") || query.equals("rue") || query.equals("r u") || query.equals("ru") || 
-			query.equals("resto universitaire") || query.equals("restaurant universitaire")   ){
+			query.equals("resto universitaire") || query.equals("restaurant universitaire")){
 			return dbController.getBuildingWithNumber(101);
 		}
 		

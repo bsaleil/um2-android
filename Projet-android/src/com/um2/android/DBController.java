@@ -15,15 +15,17 @@ import org.osmdroid.util.GeoPoint;
 
 public class DBController 
 {
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 2;
 	private static final String DB_NAME = "buildings.db";
 	private static final String TABLE_BUILDINGS = "buildings";
 	private static final String BUILDING_NUMBER = "building_number";
 	private static final String BUILDING_POINTS = "building_points";
+	private static final String BUILDING_CATEGORY = "building_category";
 	
 	// Numéros des colonnes
 	private static final int NUM_BUILDINGS_NUMBER = 0;
 	private static final int NUM_BUILDINGS_POINTS = 1;
+	private static final int NUM_BUILDINGS_CATEGORY = 2;
 	
 	private SQLiteDatabase bdd;
  
@@ -58,6 +60,7 @@ public class DBController
 		
 		//on lui ajoute une valeur associée à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
 		values.put(BUILDING_NUMBER, b.getNumber());
+		values.put(BUILDING_CATEGORY, b.getCategory());
 		
 		// Conversion d'un arraylist en JSON
 		JSONObject json = new JSONObject();
@@ -88,16 +91,40 @@ public class DBController
 		return false;
 	}
 	
+	public Building getBuildingWithCategory(String category)
+	{
+		Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_NUMBER, BUILDING_POINTS, BUILDING_CATEGORY}, BUILDING_CATEGORY + " LIKE \"" + category +"\"", null, null, null, null);
+		return cursorToBuilding(c);
+	}
+	
 	public Building getBuildingWithNumber(int n)
 	{
-		Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_NUMBER, BUILDING_POINTS}, BUILDING_NUMBER + " LIKE \"" + n +"\"", null, null, null, null);
+		Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_NUMBER, BUILDING_POINTS, BUILDING_CATEGORY}, BUILDING_NUMBER + " LIKE \"" + n +"\"", null, null, null, null);
 		return cursorToBuilding(c);
 	}
 	
 	public ArrayList<Building> getAllBuidings()
 	{
 		ArrayList<Building> res = new ArrayList<Building>();
-		Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_NUMBER, BUILDING_POINTS}, null, null, null, null, null);
+		Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_NUMBER, BUILDING_POINTS, BUILDING_CATEGORY},
+				BUILDING_CATEGORY+" LIKE \"default\" ", null, null, null, null);
+
+		for(int i=0; i<c.getCount(); i++)
+		{
+			c.moveToPosition(i);
+			Building b = specificCursorToBuilding(c);
+			if(b != null)
+				res.add(b);
+		}
+		c.close();
+		return res;
+	}
+	
+	public ArrayList<Building> getAllPoiBuidings()
+	{
+		ArrayList<Building> res = new ArrayList<Building>();
+		Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_NUMBER, BUILDING_POINTS, BUILDING_CATEGORY}, 
+				BUILDING_CATEGORY+" NOT LIKE \"default\" ", null, null, null, null);
 
 		for(int i=0; i<c.getCount(); i++)
 		{
@@ -158,6 +185,7 @@ public class DBController
 				points.add(g);
 			}
 			b.setPoints(points);
+			b.setCategory(c.getString(NUM_BUILDINGS_CATEGORY));
 		}
 		catch (JSONException e) 
 		{

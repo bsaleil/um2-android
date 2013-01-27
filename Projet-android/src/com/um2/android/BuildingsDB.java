@@ -11,10 +11,11 @@ public class BuildingsDB extends SQLiteOpenHelper
 	private static final String ID = "id";
 	private static final String BUILDING_NUMBER = "building_number";
 	private static final String BUILDING_POINTS = "building_points";
+	private static final String BUILDING_CATEGORY = "building_category";
 	
 	private static final String CREATE_BDD = "CREATE TABLE " + TABLE_BUILDINGS + " ("
 	+ ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + BUILDING_NUMBER + " text not null, "
-	+ BUILDING_POINTS +" TEXT NOT NULL );";
+	+ BUILDING_POINTS +" TEXT NOT NULL ,"+ BUILDING_CATEGORY +" DEFAULT \"default\");";
  
 	public BuildingsDB(Context context, String name, CursorFactory factory, int version) 
 	{

@@ -11,6 +11,9 @@ public class Building
 	// Numero du batiment
 	private int number;
 	
+	// Si ce bâtiment est un distributeur, wifi etc
+	private String category = "default"; 
+	
 	// Liste des coordonnees du batiment
 	ArrayList<GeoPoint> points;
 	
@@ -90,5 +93,15 @@ public class Building
 	public void setPoints(ArrayList<GeoPoint> a)
 	{
 		points = a;
+	}
+	
+	public String getCategory()
+	{
+		return category;
+	}
+	
+	public void setCategory(String c)
+	{
+		category = c;
 	}
 }
