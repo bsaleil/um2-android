@@ -8,11 +8,12 @@
     <string name="menu_list">Places</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    
-	
+
     <!-- Vue liste des batiments -->
     <string name="title_activity_building_list">BuildingListActivity</string>
     <string name="tab_title_building">Buildings</string>
     <string name="tab_title_other">Others</string>
     <string name="building">Building</string>
+    <string name="title_activity_search">SearchActivity</string>
+
 </resources>

@@ -6,7 +6,9 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 
+import android.R.menu;
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -19,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 public class CustomMapActivity extends Activity
@@ -35,7 +38,7 @@ public class CustomMapActivity extends Activity
 		// TODO : Gérer la MAJ de la route + marqueur dans le thread (pour l'instant, on calcule et affiche qu'une fois)
 		// TODO : La destination est écrite en dur. A passer en paramètre du thread, puis relance le thread en cas de changement ?
 		super.onCreate(savedInstanceState);
-				
+		    
 		initializeMap();
 		
 		// On récupère les batiments
@@ -124,7 +127,7 @@ public class CustomMapActivity extends Activity
 
 		    public void onProviderDisabled(String provider) {}
 		  };
-
+		  
 		// Register the listener with the Location Manager to receive location updates
 		locationManager.requestLocationUpdates(currentProvider, 0, 0, locationListener);
 	}
@@ -168,6 +171,13 @@ public class CustomMapActivity extends Activity
 	{
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.activity_map, menu);
+		
+		// Gestion de la recherche
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		searchView.setSubmitButtonEnabled(true);
+				
 		return true;
 	}
 }
