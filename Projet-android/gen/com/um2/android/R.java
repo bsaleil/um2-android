@@ -49,6 +49,9 @@ public final class R {
         /**  Vue liste des batiments 
          */
         public static final int title_activity_building_list=0x7f050008;
+        /**  Préférences 
+         */
+        public static final int title_activity_preferences=0x7f050010;
         public static final int title_activity_search=0x7f05000c;
     }
     public static final class style {
@@ -80,6 +83,7 @@ public final class R {
         public static final int AppTheme=0x7f060001;
     }
     public static final class xml {
-        public static final int searchable=0x7f040000;
+        public static final int preferences=0x7f040000;
+        public static final int searchable=0x7f040001;
     }
 }

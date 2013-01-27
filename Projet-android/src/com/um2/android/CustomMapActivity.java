@@ -220,6 +220,13 @@ public class CustomMapActivity extends Activity
 		AlertDialog alertDialog = alertDialogBuilder.create();
 		alertDialog.show();
 	}
+	
+	// Listener du click sur le bouton des préférences
+	public void onPrefsClick(MenuItem item)
+	{
+		Intent myIntent = new Intent(this, SettingsActivity.class);
+		startActivityForResult(myIntent, 10);
+	}
 
 	// For 4.0.3 Compatibility
 	@Override
@@ -242,6 +249,9 @@ public class CustomMapActivity extends Activity
 
 			case R.id.menu_about:
 				onAboutClick(item);
+				return true;
+			case R.id.menu_prefs:
+				onPrefsClick(item);
 				return true;
 
 			default:

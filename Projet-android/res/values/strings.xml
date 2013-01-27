@@ -11,7 +11,7 @@
     <string name="apropos_menu">About</string>
 
     <!-- Vue liste des batiments -->
-    <string name="title_activity_building_list">BuildingListActivity</string>
+    <string name="title_activity_building_list">Buildings</string>
     <string name="tab_title_building">Buildings</string>
     <string name="tab_title_other">Others</string>
     <string name="building">Building</string>
@@ -20,4 +20,7 @@
     <string name="cafeteria">Cafeteria</string>
     <string name="CSU">University Sports Centre (CSU)</string>
 
+    <!-- Préférences -->
+    <string name="title_activity_preferences">Preferences</string>
+    
 </resources>
