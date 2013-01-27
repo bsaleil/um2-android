@@ -14,10 +14,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 // Ce thread est chargé de calculer la route depuis la position actuelle, vers un point donné
 public class RouteThread extends Thread 
@@ -67,6 +69,15 @@ public class RouteThread extends Thread
 				PathOverlay po = new PathOverlay(Color.RED, context);
 				YOURSRoute yr = new YOURSRoute(targetBuilding.getPoints().get(0));
 				ArrayList<double[]> al = yr.calculateRoute(position, null);
+				
+				// On récupère la description
+				/*Toast t = Toast.makeText(context,
+						yr.description,
+						Toast.LENGTH_SHORT);
+				t.show();
+				*/
+				Log.i("BB",yr.description);
+				
 				// Pour chaque point
 				for (int i = 0; i < al.size(); i++) 
 				{
@@ -89,7 +100,12 @@ public class RouteThread extends Thread
 				
 				// Envois le message au handler pour mettre la carte à jour
 				Message msg = new Message();
+				Bundle b = new Bundle();
+				b.putString("DESCRIPTION", yr.getDescription());
+				msg.setData(b); 
 				updateHandler.sendMessage(msg);
+				
+				//
 			}
 			else // Lecture position impossible
 			{

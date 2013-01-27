@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import org.osmdroid.util.GeoPoint;
 import android.location.Location;
+import android.util.Log;
 
 // Cette classe permet d'interroger l'API YOUR pour obtenir une route entre 2 points, en mode piéton
 public class YOURSRoute
@@ -18,6 +19,10 @@ public class YOURSRoute
 	static String format = "kml";	// Return XML
 	static String type = "foot";	// Return route by walking
 	static String fast = "0";		// Return shortest route
+	static String instructions="1"; // Return description route
+	static String lang = "fr";
+	
+	String description = "";
 	
 	String endLat = "43.633156";		// End point latitude
 	String endLon = "3.864269";		// End point latitude
@@ -40,6 +45,8 @@ public class YOURSRoute
 		query += "&tlon=" + endLon;
 		query += "&v=" + type;
 		query += "&fast=" + fast;
+		query += "&instructions=" + instructions;
+		query += "&lang=" + lang;
 		
 		// Get XML
 		URL url = new URL(query);
@@ -49,12 +56,15 @@ public class YOURSRoute
 		// Read results
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		boolean copy = false;
+		boolean copy1 = false;
+		boolean desFound = false;
 		ArrayList<double[]> routePoints = new ArrayList<double[]>();
 		
 		// Permet d'avoir un trait entre "from" et le 1er point de la route
 		routePoints.add(new double[]{from.getLatitude(),from.getLongitude()});
 		
 		String s = "";
+		description= "";
 		while ((s = reader.readLine()) != null)
 		{
 			// If open tag
@@ -76,7 +86,31 @@ public class YOURSRoute
 			{
 				addStringPoint(s,routePoints);
 			}
+			
+			/** Description **/
+			// If open tag
+			if (s.contains("<description>") && !desFound)
+			{
+				s = normalizeString2(s.replaceAll("<description>", " ")); // Remove all bad chars
+				description = description.concat(s);
+				copy1 = true;
+			}
+			// If close tag
+			else if (s.contains("</description>") && !desFound)
+			{
+				s = normalizeString2(s.replaceAll("</description>", " ")); // Remove all bad chars
+				description = description.concat(s);
+				copy1 = false;
+				desFound = true;
+			}
+			// If between open and close tags
+			else if (copy1)
+			{
+				description = description.concat(s);
+			}
 		}
+		description = description.substring(0, description.indexOf("."));
+		description = normalizeString2(description);
 		
 		return routePoints;
 	}
@@ -96,6 +130,18 @@ public class YOURSRoute
 	// Delete spaces, tabs, and return
 	private String normalizeString(String s)
 	{
-		return s = s.replaceAll(" ", "").replaceAll("\t","").replaceAll("\n", "");
+		return s = s.replaceAll(" ", "").replaceAll("\t","").replaceAll("\n", "").replaceAll("&lt;br&gt;", "");
+	}
+	
+	// Delete, tabs, and return
+	private String normalizeString2(String s)
+	{
+		return s = s.replaceAll("\t","").replaceAll("\n", "").replaceAll("&lt;br&gt;", "");
+	}
+	
+	// Return Description
+	public String getDescription()
+	{
+		return description;
 	}
 }

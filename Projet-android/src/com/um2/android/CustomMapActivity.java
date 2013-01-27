@@ -35,8 +35,10 @@ public class CustomMapActivity extends Activity
 	private String currentProvider;
 	private DBController dbController;
 	protected static final int RESULT_SPEECH = 1;
-	private TextView txtText;
 	private TextToSpeech tts;
+	private String previousMSG = "";
+	private int timer = 0;
+	
 	
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -95,6 +97,19 @@ public class CustomMapActivity extends Activity
 	        @Override
 	        public void handleMessage(Message msg) {
 	            mapView.invalidate();
+	            
+	         // Speak
+	            if(msg.getData().get("DESCRIPTION") != null)
+	            {
+	            	if(!msg.getData().get("DESCRIPTION").equals(previousMSG) || timer>6)
+	            	{
+	            		previousMSG = msg.getData().get("DESCRIPTION").toString();
+	            		tts.speak(previousMSG, TextToSpeech.QUEUE_FLUSH, null);
+	            		timer=0;
+	            	}
+	            	timer++;
+	            }
+	            
 	        }
 		};
 		routeThread = new RouteThread(mapView, this, position, mHandler);
