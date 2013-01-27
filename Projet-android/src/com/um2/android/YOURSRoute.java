@@ -26,15 +26,17 @@ public class YOURSRoute
 	
 	String endLat = "43.633156";		// End point latitude
 	String endLon = "3.864269";		// End point latitude
+	GeoPoint targetPoint;
 	
 	public YOURSRoute(GeoPoint target)
 	{
+		targetPoint = target;
 		endLat = String.valueOf(target.getLatitudeE6() / 1e6);
 		endLon = String.valueOf(target.getLongitudeE6() / 1e6);
 	}
 	
 	// Calcule and return route from point to other point
-	public ArrayList<double[]> calculateRoute(Location from, Location to) throws IOException
+	public ArrayList<double[]> calculateRoute(Location from) throws IOException
 	{		
 		// Build query
 		String query = service;
@@ -112,6 +114,8 @@ public class YOURSRoute
 		description = description.substring(0, description.indexOf("."));
 		description = normalizeString2(description);
 		
+		// Ajoute un point de la fin de la route, au point de destination
+		routePoints.add(new double[]{targetPoint.getLatitudeE6() / 1e6,targetPoint.getLongitudeE6() / 1e6});
 		return routePoints;
 	}
 	

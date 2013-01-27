@@ -68,16 +68,9 @@ public class RouteThread extends Thread
 				// On calcule la route
 				PathOverlay po = new PathOverlay(Color.RED, context);
 				YOURSRoute yr = new YOURSRoute(targetBuilding.getPoints().get(0));
-				ArrayList<double[]> al = yr.calculateRoute(position, null);
-				
-				// On récupère la description
-				/*Toast t = Toast.makeText(context,
-						yr.description,
-						Toast.LENGTH_SHORT);
-				t.show();
-				*/
-				Log.i("BB",yr.description);
-				
+
+				ArrayList<double[]> al = yr.calculateRoute(position);
+
 				// Pour chaque point
 				for (int i = 0; i < al.size(); i++) 
 				{

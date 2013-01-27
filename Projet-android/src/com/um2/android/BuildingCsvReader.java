@@ -25,6 +25,8 @@ public class BuildingCsvReader
 			
 			while ((line = reader.readLine()) != null)
 			{
+				if (line.equals("")) line = reader.readLine(); // Empty line
+				
 				String str[] = line.split(":",5);
 				int buildingNumber = Integer.parseInt(str[0]);
 				int pointsNumber = Integer.parseInt(str[1]);
@@ -34,6 +36,7 @@ public class BuildingCsvReader
 				for (int i=1; i<pointsNumber; i++) // For each point of this building
 				{
 					line = reader.readLine();
+					if (line.equals("")) line = reader.readLine(); // Empty line
 					str = line.split(":");
 					b.addPoint(Double.parseDouble(str[2]), Double.parseDouble(str[3]));
 				}
