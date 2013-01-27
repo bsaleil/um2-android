@@ -33,10 +33,13 @@ public final class R {
     }
     public static final class string {
         public static final int CSU=0x7f05000f;
+        public static final int activer_ics=0x7f050012;
         public static final int app_name=0x7f050000;
         public static final int apropos_menu=0x7f050007;
         public static final int building=0x7f05000b;
         public static final int cafeteria=0x7f05000e;
+        public static final int fichier_ics=0x7f050013;
+        public static final int guidage_vocal=0x7f050011;
         public static final int hello_world=0x7f050005;
         public static final int menu_focus=0x7f050002;
         public static final int menu_list=0x7f050004;

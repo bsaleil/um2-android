@@ -22,5 +22,8 @@
 
     <!-- Préférences -->
     <string name="title_activity_preferences">Preferences</string>
+    <string name="guidage_vocal">Voice guidance</string>
+    <string name="activer_ics">Enable automatic guidance</string>
+    <string name="fichier_ics">Schedule file</string>
     
 </resources>

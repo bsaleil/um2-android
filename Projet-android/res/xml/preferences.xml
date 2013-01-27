@@ -4,4 +4,15 @@
         android:key="guidage_vocal"
         android:title="@string/guidage_vocal"
         android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="activer_ics"
+        android:title="@string/activer_ics"
+        android:defaultValue="true" />
+    <EditTextPreference
+        android:key="fichier_ics"
+        android:title="@string/fichier_ics"
+        android:singleLine="true"
+        android:dependency="activer_ics"
+        android:defaultValue="schedule.ics" />
+        
 </PreferenceScreen>
