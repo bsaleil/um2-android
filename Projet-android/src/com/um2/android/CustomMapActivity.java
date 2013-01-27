@@ -287,12 +287,6 @@ public class CustomMapActivity extends Activity
 					ArrayList<String> text = data
 							.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
-					/*Toast t = Toast.makeText(getApplicationContext(),
-							text.get(0), Toast.LENGTH_SHORT);
-					t.show();
-					// Speak
-					tts.speak(text.get(0), TextToSpeech.QUEUE_FLUSH, null);
-					*/
 					Building b =  search(text.get(0));
 					Toast t;
 					if (b == null)
@@ -305,9 +299,6 @@ public class CustomMapActivity extends Activity
 					else
 					{
 					    ((UM2Application) getApplication()).setTargetBuilding(b);
-					    t = Toast.makeText(getApplicationContext(),b.getName(this), Toast.LENGTH_SHORT);
-						t.show();
-						tts.speak(b.getName(this), TextToSpeech.QUEUE_FLUSH, null);
 					}
 				}
 			}
@@ -349,9 +340,6 @@ public class CustomMapActivity extends Activity
 				else
 				{
 				    ((UM2Application) getApplication()).setTargetBuilding(b);
-				    t = Toast.makeText(getApplicationContext(),b.getName(self), Toast.LENGTH_SHORT);
-					t.show();
-					tts.speak(b.getName(self), TextToSpeech.QUEUE_FLUSH, null);
 				}
 				
 				return true;
@@ -366,13 +354,9 @@ public class CustomMapActivity extends Activity
 	private Building search(String query)
 	{
 		Building b = null ;
-		
 	
 		// Traitement des mots clès
 		query = query.toLowerCase();
-		
-		Toast t = Toast.makeText(getApplicationContext(),query, Toast.LENGTH_SHORT);
-		t.show();
 		
 		
 		if(query.startsWith("1") || query.startsWith("2") || query.startsWith("3")
@@ -380,11 +364,11 @@ public class CustomMapActivity extends Activity
 			return dbController.getBuildingWithNumber(Integer.parseInt(query));
 		}
 
-		if(query.startsWith("bâtiment")){
+		if(query.startsWith("bâtiment") || query.startsWith("batiment")){
 			return dbController.getBuildingWithNumber(Integer.parseInt(query.substring(9)));
 		}
 		
-		if(query.startsWith("bate")){
+		if(query.startsWith("bate") || query.startsWith("bat")){
 			return dbController.getBuildingWithNumber(Integer.parseInt(query.substring(4)));
 		}
 		
