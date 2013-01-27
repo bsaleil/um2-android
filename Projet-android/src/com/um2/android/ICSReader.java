@@ -85,9 +85,9 @@ public class ICSReader
 		else
 		{
 			Log.d("MONTAG", "Fichier ICS inexistant.");
-			return null;
+			return (new ArrayList<VEvent>());
 		}
-		return null;
+		return (new ArrayList<VEvent>());
 	}
 	
 	// Retourne une chaine qui décrit l'évènement
@@ -127,7 +127,6 @@ public class ICSReader
 		if (events.size() > 0)
 		{
 			VEvent nextEvent = events.get(0); // Premier event
-			
 			// Pour chaque event
 			for (int i=0; i<events.size(); i++)
 			{
@@ -141,8 +140,10 @@ public class ICSReader
 		    Building b = dbController.getBuildingWithNumber(getBuildingNumberFromEvent(nextEvent));
 		    dbController.close();
 		    if (b != null)
+		    {
 		    	Toast.makeText(context, eventToString(nextEvent), Toast.LENGTH_LONG).show();
-		    return b;
+		    	return b;
+		    }
 		}
 		return null;
 	}
