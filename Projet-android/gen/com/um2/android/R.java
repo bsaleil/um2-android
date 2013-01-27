@@ -25,7 +25,6 @@ public final class R {
     }
     public static final class layout {
         public static final int activity_map=0x7f030000;
-        public static final int activity_search=0x7f030001;
     }
     public static final class menu {
         public static final int activity_map=0x7f070000;
@@ -50,9 +49,11 @@ public final class R {
         public static final int tab_title_building=0x7f050009;
         public static final int tab_title_other=0x7f05000a;
         /**  Vue liste des batiments 
+ Vue liste des batiments 
          */
         public static final int title_activity_building_list=0x7f050008;
         /**  Préférences 
+ Préférences 
          */
         public static final int title_activity_preferences=0x7f050010;
         public static final int title_activity_search=0x7f05000c;
@@ -87,6 +88,5 @@ public final class R {
     }
     public static final class xml {
         public static final int preferences=0x7f040000;
-        public static final int searchable=0x7f040001;
     }
 }
