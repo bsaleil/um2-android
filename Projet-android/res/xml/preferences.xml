@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
-        android:key="pref_sync"
-        android:title="@string/hello_world"
-        android:summary="@string/hello_world"
+        android:key="guidage_vocal"
+        android:title="@string/guidage_vocal"
         android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="activer_ics"
+        android:title="@string/activer_ics"
+        android:defaultValue="true" />
+    <EditTextPreference
+        android:key="fichier_ics"
+        android:title="@string/fichier_ics"
+        android:singleLine="true"
+        android:dependency="activer_ics"
+        android:defaultValue="schedule.ics" />
+        
 </PreferenceScreen>

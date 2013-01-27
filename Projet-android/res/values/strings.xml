@@ -17,10 +17,13 @@
     <string name="building">Bâtiment</string>
     <string name="title_activity_search">Recherche</string>
     <string name="resto_u">Restaurant Universitaire</string>
-    <string name="cafeteria">Caféteriat</string>
+    <string name="cafeteria">Cafétéria</string>
     <string name="CSU">Centre Sportif Universitaire (CSU)</string>
 
     <!-- Préférences -->
     <string name="title_activity_preferences">Préférences</string>
+    <string name="guidage_vocal">Guidage vocal</string>
+    <string name="activer_ics">Activer guidage automatique</string>
+    <string name="fichier_ics">Fichier de calendrier</string>
     
 </resources>
