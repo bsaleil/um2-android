@@ -161,7 +161,8 @@ public class CustomMapActivity extends Activity
 			currentProvider = LocationManager.NETWORK_PROVIDER;
 			position = locationManager.getLastKnownLocation(currentProvider);
 		}
-
+		
+		listenerLocation();
 		// Créé le handler pour mettre à jour la carte depuis le thread principal
 		Handler mHandler = new Handler() {
 	        @Override
