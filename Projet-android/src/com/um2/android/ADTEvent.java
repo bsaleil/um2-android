@@ -6,8 +6,7 @@ import java.util.regex.Pattern;
 import net.fortuna.ical4j.model.component.VEvent;
 
 public class ADTEvent extends VEvent
-{
-	
+{	
 	public String getADTSummary()
 	{
 		return getSummary().getValue();
@@ -16,10 +15,10 @@ public class ADTEvent extends VEvent
 	public int getADTBuilding()
 	{
 		String location = getLocation().getValue();
-	    Scanner s = new Scanner(location);
-	    Pattern p = Pattern.compile("[0-9]+");
+		Scanner s = new Scanner(location);
+		Pattern p = Pattern.compile("[0-9]+");
 	    
-	    return Integer.parseInt(s.findInLine(p));
+		return Integer.parseInt(s.findInLine(p));
 	}
 	
 	public String getADTStartDay()

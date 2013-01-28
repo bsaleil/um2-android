@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import org.osmdroid.util.GeoPoint;
 
@@ -26,6 +27,16 @@ public class DBController
 	private static final int NUM_BUILDINGS_NUMBER = 0;
 	private static final int NUM_BUILDINGS_POINTS = 1;
 	private static final int NUM_BUILDINGS_CATEGORY = 2;
+	
+	// Table Events
+	private static final String TABLE_EVENTS = "events";
+	private static final String EVENT_ID = "id";
+	private static final String EVENT_SUMMARY = "event_summary";
+	private static final String EVENT_BUILDING = "event_building";
+	private static final String EVENT_START_DAY = "event_start_day";
+	private static final String EVENT_END_DAY = "event_end_day";
+	private static final String EVENT_START_MINUTES = "event_start_minutes";
+	private static final String EVENT_END_MINUTES = "event_end_minutes";
 	
 	private SQLiteDatabase db;
  
@@ -51,6 +62,38 @@ public class DBController
 	public SQLiteDatabase getBDD()
 	{
 		return db;
+	}
+	
+	public void insertAllEvents(ArrayList<ADTEvent> events)
+	{
+		ContentValues values = new ContentValues();
+		
+		for (ADTEvent e : events)
+		{
+			values.put(EVENT_BUILDING, e.getADTBuilding());
+			values.put(EVENT_SUMMARY, e.getADTSummary());
+			values.put(EVENT_START_DAY, e.getADTStartDay());
+			values.put(EVENT_END_DAY, e.getADTEndDay());
+			values.put(EVENT_START_MINUTES, e.getADTMinutesStart());
+			values.put(EVENT_END_MINUTES, e.getADTMinutesEnd());
+		}
+		
+		db.insert(TABLE_EVENTS, null, values);
+	}
+	
+	public ArrayList<ADTEvent> getAllEvents()
+	{
+		ArrayList<ADTEvent> res = new ArrayList<ADTEvent>();
+		
+		// Avoir toutes les catégories stockées en base
+		Cursor c = db.query(TABLE_EVENTS, new String[] { EVENT_BUILDING, EVENT_SUMMARY,
+				EVENT_START_DAY, EVENT_END_DAY, EVENT_START_MINUTES,
+				EVENT_END_MINUTES }, null, null, null, null, null);
+		
+		Log.d("DEBUG", "Résultats : "+c.getCount());
+		
+		c.close();
+		return res;
 	}
  
 	public long insertBuilding(Building b)

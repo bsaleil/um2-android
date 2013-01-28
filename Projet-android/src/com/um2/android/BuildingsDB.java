@@ -17,12 +17,22 @@ public class BuildingsDB extends SQLiteOpenHelper
 	+ BUILDING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + BUILDING_NUMBER + " text not null, "
 	+ BUILDING_POINTS +" TEXT NOT NULL ,"+ BUILDING_CATEGORY +" DEFAULT \"default\");";
  
+	// Table Events
 	private static final String TABLE_EVENTS = "events";
 	private static final String EVENT_ID = "id";
-	private static final String EVENT_DATE = "event_date";
+	private static final String EVENT_SUMMARY = "event_summary";
+	private static final String EVENT_BUILDING = "event_building";
+	private static final String EVENT_START_DAY = "event_start_day";
+	private static final String EVENT_END_DAY = "event_end_day";
+	private static final String EVENT_START_MINUTES = "event_start_minutes";
+	private static final String EVENT_END_MINUTES = "event_end_minutes";
 	
 	private static final String CREATE_BDD_EVENTS = "CREATE TABLE " + TABLE_EVENTS + " ("
-	+ EVENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + EVENT_DATE + " text not null); ";
+	+ EVENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +EVENT_BUILDING + "INTEGER NOT NULL,"
+	+ EVENT_SUMMARY + " TEXT NOT NULL," 
+	+ EVENT_START_DAY + " TEXT NOT NULL, " + EVENT_END_DAY + " TEXT NOT NULL, "
+	+ EVENT_START_MINUTES + " TEXT NOT NULL, " + EVENT_END_MINUTES + " TEXT NOT NULL"
+	+"); ";
 	
 	public BuildingsDB(Context context, String name, CursorFactory factory, int version) 
 	{
