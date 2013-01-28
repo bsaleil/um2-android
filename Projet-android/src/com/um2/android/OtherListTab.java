@@ -34,10 +34,10 @@ public class OtherListTab extends ListFragment
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
+		((UM2Application) getActivity().getApplication()).setTargetBuilding(null);
 		Intent intent = new Intent(getActivity().getApplicationContext(), CustomMapActivity.class);
 		intent.putExtra("category",listItems.get((int)id));
 		getActivity().setResult(1,intent);
 		getActivity().finish();
-		((UM2Application) getActivity().getApplication()).setTargetBuilding(null);
 	}
 }
