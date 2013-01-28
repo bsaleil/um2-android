@@ -10,9 +10,9 @@ public class UM2Application extends Application
 	
 	public void setTargetBuilding(Building building)
 	{
+		targetBuilding = building;
 		if(building != null)
 		{
-			targetBuilding = building;
 			Toast t = Toast.makeText(getApplicationContext(),targetBuilding.getName(this), Toast.LENGTH_SHORT);
 			t.show();
 			Vibrator v = (Vibrator) getSystemService(getApplicationContext().VIBRATOR_SERVICE);

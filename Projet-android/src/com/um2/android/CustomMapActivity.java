@@ -124,8 +124,9 @@ public class CustomMapActivity extends Activity
 					}
 				}, mResourceProxy);
 		
-	        mapView.getOverlays().add(mMyLocationOverlay);
-	        mapView.invalidate();
+	        //mapView.getOverlays().add(mMyLocationOverlay);
+	        //mapView.invalidate();
+			routeThread.setMapMarkers(mMyLocationOverlay);
 	}
 
 	// Initialise l'affichage de la map
@@ -344,7 +345,6 @@ public class CustomMapActivity extends Activity
 		{
 			case RESULT_LIST:
 			{
-				
 				if (data != null && data.hasExtra("category"))
 				{
 					putMarkersFromCategory(data.getStringExtra("category"));

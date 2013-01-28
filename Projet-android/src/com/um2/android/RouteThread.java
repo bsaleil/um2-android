@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedOverlay;
+import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.PathOverlay;
 import org.osmdroid.views.overlay.SimpleLocationOverlay;
 
@@ -24,6 +26,7 @@ public class RouteThread extends Thread
 	private MapView mapView;
 	private Location position;
 	private Building targetBuilding;
+	ItemizedOverlay<OverlayItem> markers;
 	Handler updateHandler;
 	
 	public RouteThread(MapView mv, Activity c, Location l, Handler h) 
@@ -33,6 +36,7 @@ public class RouteThread extends Thread
 		position = l;
 		targetBuilding = null; // Si null, le chemin n'est pas dessiné
 		updateHandler = h;
+		markers = null;
 	}
 	
 	public void setPosition(Location l)
@@ -45,6 +49,11 @@ public class RouteThread extends Thread
 		targetBuilding = building;
 	}
 
+	public void setMapMarkers(ItemizedOverlay<OverlayItem> items)
+	{
+		markers = items;
+	}
+	
 	public void run() 
 	{		
 		try
@@ -58,6 +67,7 @@ public class RouteThread extends Thread
 			// Si la position est nulle, ou que le batiment de destination est null, on fait rien
 			if (position != null && targetBuilding != null) 
 			{
+				Log.d("MONTAG", "On dessine une route");
 				// Enlève les anciennes routes
 				mapView.getOverlays().clear();
 				
@@ -91,6 +101,20 @@ public class RouteThread extends Thread
 				Message msg = new Message();
 				Bundle b = new Bundle();
 				b.putString("DESCRIPTION", yr.getDescription());
+				msg.setData(b); 
+				updateHandler.sendMessage(msg);
+			}
+			// Sinon, si on a des marqueurs à afficher
+			else if (markers != null)
+			{
+				Log.d("MONTAG", "On dessine des marqueurs");
+				// Enlève les anciennes routes
+				mapView.getOverlays().clear();
+				mapView.getOverlays().add(markers);
+				// Envoie le message au handler pour mettre la carte à jour
+				Message msg = new Message();
+				Bundle b = new Bundle();
+				//b.putString("DESCRIPTION", yr.getDescription());
 				msg.setData(b); 
 				updateHandler.sendMessage(msg);
 			}
