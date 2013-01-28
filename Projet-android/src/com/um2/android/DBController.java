@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import org.osmdroid.util.GeoPoint;
 
@@ -91,10 +92,37 @@ public class DBController
 		return false;
 	}
 	
-	public Building getBuildingWithCategory(String category)
+	public ArrayList<String> getAllCategories()
 	{
+		ArrayList<String> res = new ArrayList<String>();
+		
+		// Avoir toutes les catégories stockées en base
+		Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_CATEGORY}, 
+				BUILDING_CATEGORY + " NOT LIKE \"default\"", null, BUILDING_CATEGORY, null, null);
+		
+		for(int i=0; i<c.getCount(); i++)
+		{
+			c.moveToPosition(i);
+			res.add(c.getString(0));
+		}
+		c.close();
+		return res;
+	}
+	
+	public ArrayList<Building> getBuildingsWithCategory(String category)
+	{
+		ArrayList<Building> res = new ArrayList<Building>();
+		
 		Cursor c = bdd.query(TABLE_BUILDINGS, new String[] {BUILDING_NUMBER, BUILDING_POINTS, BUILDING_CATEGORY}, BUILDING_CATEGORY + " LIKE \"" + category +"\"", null, null, null, null);
-		return cursorToBuilding(c);
+		for(int i=0; i<c.getCount(); i++)
+		{
+			c.moveToPosition(i);
+			Building b = specificCursorToBuilding(c);
+			if(b != null)
+				res.add(b);
+		}
+		c.close();
+		return res;
 	}
 	
 	public Building getBuildingWithNumber(int n)

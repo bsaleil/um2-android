@@ -1,29 +1,15 @@
 package com.um2.android;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Scanner;
 
-import net.fortuna.ical4j.data.CalendarBuilder;
-import net.fortuna.ical4j.data.ParserException;
-import net.fortuna.ical4j.filter.Filter;
-import net.fortuna.ical4j.filter.PeriodRule;
-import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.Component;
-import net.fortuna.ical4j.model.DateTime;
-import net.fortuna.ical4j.model.Dur;
-import net.fortuna.ical4j.model.Period;
-import net.fortuna.ical4j.model.component.VEvent;
-
-import org.apache.james.mime4j.parser.Event;
+import org.osmdroid.DefaultResourceProxyImpl;
+import org.osmdroid.ResourceProxy;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.ItemizedIconOverlay;
+import org.osmdroid.views.overlay.ItemizedOverlay;
+import org.osmdroid.views.overlay.OverlayItem;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -36,7 +22,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -93,7 +78,6 @@ public class CustomMapActivity extends Activity
 		// Calculer l'itineraire si itineraire automatique activé
 		automaticGuidance();
 
-		
 		// Lancement du thread de calcul de route avec le handler
 		initializeRouteThread();
 
@@ -101,6 +85,51 @@ public class CustomMapActivity extends Activity
 		tts = new TextToSpeech(this, null);
 		
 		self = this;
+		
+		// Si l'activité a été démarrée depuis OtherListTab, on récupère la catégorie
+		Intent fromIntent = getIntent();
+		if(fromIntent.getFlags() == Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
+			putMarkersFromCategory(fromIntent.getStringExtra("category"));
+	}
+	
+	public void putMarkersFromCategory(String c)
+	{
+		ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
+		
+		final ArrayList<Building> buildings = dbController.getBuildingsWithCategory(c);
+		for(Building b : buildings)
+		{
+			GeoPoint g = b.getPoints().get(0);
+			
+			// Ajoute l'item aux overlays
+		        items.add(new OverlayItem(b.getCategory(), " : "+b.getNumber(), g));
+		}
+		
+		ResourceProxy mResourceProxy = new DefaultResourceProxyImpl(getApplicationContext());
+	        /* OnTapListener for the Markers, shows a simple Toast. */
+		ItemizedOverlay<OverlayItem> mMyLocationOverlay = new ItemizedIconOverlay<OverlayItem>(
+				items, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>()
+				{
+					@Override
+					public boolean onItemSingleTapUp(final int index, final OverlayItem item)
+					{
+						Toast.makeText(CustomMapActivity.this,
+								item.mTitle,
+								Toast.LENGTH_LONG).show();
+						return true; 
+					}
+
+					@Override
+					public boolean onItemLongPress(final int index, final OverlayItem item)
+					{
+						Building selected = buildings.get(index);
+						((UM2Application) getApplication()).setTargetBuilding(selected);
+						return false;
+					}
+				}, mResourceProxy);
+		
+	        mapView.getOverlays().add(mMyLocationOverlay);
+	        mapView.invalidate();
 	}
 
 	// Initialise l'affichage de la map
@@ -398,7 +427,6 @@ public class CustomMapActivity extends Activity
 	
 		// Traitement des mots clès
 		query = query.toLowerCase();
-		
 		
 		if(query.startsWith("1") || query.startsWith("2") || query.startsWith("3")
 				 || query.startsWith("4")  || query.startsWith("5")){
