@@ -1,0 +1,128 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{lmodern}
+
+% Pour enlever le \institute du bas de page
+% Rapetisser les noms et date etc dans le footer
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+   \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\AtBeginSection[]
+{
+	\begin{frame}
+		\tableofcontents[currentsection,hideallsubsections]
+	\end{frame}
+}
+
+\title{Soutenance Projet Android}
+\author{Baptiste Saleil, Julien Pagès, Walid Benghabrit}
+\date{\today}
+
+\begin{document}
+	\begin{frame}
+		\titlepage
+	\end{frame}
+
+	%Plan
+	\begin{frame}{Plan}
+		\tableofcontents
+	\end{frame}
+
+	\section{Introduction}
+		% Contexte du projet
+		\begin{frame}{Contexte}
+			\begin{itemize}
+				\item Projet Universitaire
+				\item Projet de Master 2
+				\item Développement d'une application utilisation des composants d'Android
+				\item Découverte des plateformes "limitées"
+			\end{itemize}
+		\end{frame}
+		
+		% Problématique
+		\begin{frame}{Sujet}
+			\begin{exampleblock}{Consignes}
+			\begin{itemize}
+				\item Application de guidage des étudiants au sein du campus 
+				\item Utilisation du GPS
+				\item Placement de marqueurs
+				\item Mener un projet de A à Z
+			\end{itemize}
+			\end{exampleblock}
+		\end{frame}
+		
+		\section{Analyse et conception}
+		% Choix
+		\begin{frame}{Choix}
+				\begin{block}{Stratégiques}
+				\begin{itemize}
+					\item Répartition des tâches
+					\item Usage de bibliothèques "libres" si possible
+					\item Utilisation d'un gestionnaire de version
+				\end{itemize}
+				\end{block}
+		
+				\pause
+				\begin{block}{Conception}
+				\begin{itemize}
+					\item Exploitation du Hardware (géolocalisation, guidage vocal)
+					\item Guidage vers un bâtiment
+					\item Liste des différents bâtiments
+					\item Recherche textuelle/vocale
+					\item Affichage d'objets divers sur la carte (toilettes, machine à cafés...)
+					\item Gestion de fichiers de calendrier, guidage automatique
+				\end{itemize}
+				\end{block}
+		\end{frame}
+
+	\section{Résultats}
+		% quelques screens
+	
+	\section{Conclusion}
+		\begin{frame}{Difficultés}
+			\begin{itemize}
+				\item Bibliothèques utilisés peu documentées (OSMdroid)
+				\item Multithread
+				\item Aspect performances en général
+			\end{itemize}
+		\end{frame}
+		
+		\begin{frame}{Bilan}
+			\begin{block}{Bilan}
+				\begin{itemize}
+					\item Cahier des charges respecté
+					\item Application fonctionelle, complète
+					\item Découverte de nouvelles technologies, de l'embarqué en général
+				\end{itemize}
+			\end{block}
+			\pause
+			\begin{exampleblock}{Ouverture}
+				\begin{itemize}
+				\item Aller chercher l'emploi du temps directement en ligne
+				\item Plus d'éléments répertoriés dans la fac
+				
+				\end{itemize}
+			\end{exampleblock}
+		\end{frame}
+		
+		\begin{frame}{TODO PINGOUIN}
+			end frame
+		\end{frame}	
+\end{document}

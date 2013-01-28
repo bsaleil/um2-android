@@ -9,17 +9,13 @@ import org.osmdroid.views.overlay.PathOverlay;
 import org.osmdroid.views.overlay.SimpleLocationOverlay;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 // Ce thread est chargé de calculer la route depuis la position actuelle, vers un point donné
 public class RouteThread extends Thread 
@@ -91,14 +87,12 @@ public class RouteThread extends Thread
 				overlayItemArray.add(oi);
 				mapView.getOverlays().addAll(0,	overlayItemArray);
 				
-				// Envois le message au handler pour mettre la carte à jour
+				// Envoie le message au handler pour mettre la carte à jour
 				Message msg = new Message();
 				Bundle b = new Bundle();
 				b.putString("DESCRIPTION", yr.getDescription());
 				msg.setData(b); 
 				updateHandler.sendMessage(msg);
-				
-				//
 			}
 			else // Lecture position impossible
 			{

@@ -37,6 +37,8 @@ public class OtherListTab extends ListFragment
 		Intent intent = new Intent(getActivity().getApplicationContext(), CustomMapActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 		intent.putExtra("category", listItems.get((int)id));
+		((UM2Application) getActivity().getApplication()).setTargetBuilding(null);
+		
 		startActivity(intent);
 	}
 }
