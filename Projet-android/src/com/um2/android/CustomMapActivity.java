@@ -433,53 +433,72 @@ public class CustomMapActivity extends Activity
 	
 		// Traitement des mots clès
 		query = query.toLowerCase();
-		
-		if(query.startsWith("1") || query.startsWith("2") || query.startsWith("3")
-				 || query.startsWith("4")  || query.startsWith("5")){
-			return dbController.getBuildingWithNumber(Integer.parseInt(query));
+		try{
+			if(query.startsWith("1") || query.startsWith("2") || query.startsWith("3")
+					 || query.startsWith("4")  || query.startsWith("5")){
+				return dbController.getBuildingWithNumber(Integer.parseInt(query));
+			}
+	
+			if(query.startsWith("bâtiment") || query.startsWith("batiment")){
+				return dbController.getBuildingWithNumber(Integer.parseInt(query.substring(9)));
+			}
+			
+			if(query.startsWith("bate") || query.startsWith("bat")){
+				return dbController.getBuildingWithNumber(Integer.parseInt(query.substring(4)));
+			}
+			
+			
+			if(query.equals("polytech")){
+				return dbController.getBuildingWithNumber(31);
+			}
+			
+			if(query.equals("resto u") || query.equals("rue") || query.equals("r u") || query.equals("ru") || 
+				query.equals("resto universitaire") || query.equals("restaurant universitaire")){
+				return dbController.getBuildingWithNumber(101);
+			}
+			
+			if(query.equals("café") || query.equals("t'as fait") || query.equals("ca fait") || 
+					query.equals("caféteria") || query.equals("caffet")){
+					return dbController.getBuildingWithNumber(102);
+			}
+			
+			if(query.equals("csu") || query.equals("centre sportif") || query.equals("sport") ||
+					query.equals("sport")){
+				return dbController.getBuildingWithNumber(103);
+			}
+	
+			if(query.equals("bu") || query.equals("b u") || query.equals("bibliotheque") || query.equals("bibliothèque")
+					|| query.equals("biblio")){
+				return dbController.getBuildingWithNumber(8);
+			}
+		    
+			if(query.equals("admin") || query.equals("administration")){
+				return dbController.getBuildingWithNumber(7);
+			}
+		    
+			if(query.equals("maison des étudiants")){
+				return dbController.getBuildingWithNumber(34);
+			}
+			// Traitement des items
+			if(query.equals("café")){
+				putMarkersFromCategory("café");
+			}
+			
+			if(query.equals("toilette")){
+				putMarkersFromCategory("toilette");
+			}
+			
+			if(query.equals("parking")){
+				putMarkersFromCategory("parking");
+			}
+			
+			if(query.equals("wifi")){
+				putMarkersFromCategory("wifi");
+			}
+				
+		} catch (Exception e) {
+			return null;
 		}
-
-		if(query.startsWith("bâtiment") || query.startsWith("batiment")){
-			return dbController.getBuildingWithNumber(Integer.parseInt(query.substring(9)));
-		}
-		
-		if(query.startsWith("bate") || query.startsWith("bat")){
-			return dbController.getBuildingWithNumber(Integer.parseInt(query.substring(4)));
-		}
-		
-		
-		if(query.equals("polytech")){
-			return dbController.getBuildingWithNumber(31);
-		}
-		
-		if(query.equals("resto u") || query.equals("rue") || query.equals("r u") || query.equals("ru") || 
-			query.equals("resto universitaire") || query.equals("restaurant universitaire")){
-			return dbController.getBuildingWithNumber(101);
-		}
-		
-		if(query.equals("café") || query.equals("t'as fait") || query.equals("ca fait") || 
-				query.equals("caféteria") || query.equals("caffet")){
-				return dbController.getBuildingWithNumber(102);
-		}
-		
-		if(query.equals("csu") || query.equals("centre sportif") || query.equals("sport") ||
-				query.equals("sport")){
-			return dbController.getBuildingWithNumber(103);
-		}
-
-		if(query.equals("bu") || query.equals("b u") || query.equals("bibliotheque") || query.equals("bibliothèque")
-				|| query.equals("biblio")){
-			return dbController.getBuildingWithNumber(8);
-		}
-	    
-		if(query.equals("admin") || query.equals("administration")){
-			return dbController.getBuildingWithNumber(7);
-		}
-	    
-		if(query.equals("maison des étudiants")){
-			return dbController.getBuildingWithNumber(34);
-		}
-	    
 		return b;
 	}
 }
