@@ -345,10 +345,11 @@ public class CustomMapActivity extends Activity
 			case RESULT_LIST:
 			{
 				
-				if (data.getStringExtra("category") != null)
+				if (data != null && data.hasExtra("category"))
 				{
 					putMarkersFromCategory(data.getStringExtra("category"));
 				}
+
 			}
 			case RESULT_SPEECH:
 			{
