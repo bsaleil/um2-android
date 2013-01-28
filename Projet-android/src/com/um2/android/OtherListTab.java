@@ -35,8 +35,8 @@ public class OtherListTab extends ListFragment
 	public void onListItemClick(ListView l, View v, int position, long id)
 	{
 		Intent intent = new Intent(getActivity().getApplicationContext(), CustomMapActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-		intent.putExtra("category", listItems.get((int)id));
-		startActivity(intent);
+		intent.putExtra("category",listItems.get((int)id));
+		getActivity().setResult(1,intent);
+		getActivity().finish();		
 	}
 }

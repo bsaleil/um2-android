@@ -44,6 +44,7 @@ public class CustomMapActivity extends Activity
 	private DBController dbController;
 	private SharedPreferences preferences;
 	protected static final int RESULT_SPEECH = 1;
+	protected static final int RESULT_LIST = 10;
 	private TextToSpeech tts;
 	private String previousMSG = "";
 	private int timer = 0;
@@ -85,11 +86,6 @@ public class CustomMapActivity extends Activity
 		tts = new TextToSpeech(this, null);
 		
 		self = this;
-		
-		// Si l'activité a été démarrée depuis OtherListTab, on récupère la catégorie
-		Intent fromIntent = getIntent();
-		if(fromIntent.getFlags() == Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
-			putMarkersFromCategory(fromIntent.getStringExtra("category"));
 	}
 	
 	public void putMarkersFromCategory(String c)
@@ -343,9 +339,17 @@ public class CustomMapActivity extends Activity
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		super.onActivityResult(requestCode, resultCode, data);
-
+		
 		switch (requestCode)
 		{
+			case RESULT_LIST:
+			{
+				
+				if (data.getStringExtra("category") != null)
+				{
+					putMarkersFromCategory(data.getStringExtra("category"));
+				}
+			}
 			case RESULT_SPEECH:
 			{
 				if (resultCode == RESULT_OK && null != data)
