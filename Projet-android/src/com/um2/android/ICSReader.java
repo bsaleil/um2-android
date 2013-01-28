@@ -41,8 +41,8 @@ public class ICSReader
 		context = c;
 	}
 	
-	// Retourne les evenements qui ont lieu entre maintenant, et la fin de la journée
-	public List<VEvent> getDayEvents()
+	// Retourne les evenements du fichier entré dans les options
+	public List<ADTEvent> readEventsFromPrefFile()
 	{
 		File dir = Environment.getExternalStorageDirectory();
 		File file = new File(dir, icsFile);
@@ -57,24 +57,8 @@ public class ICSReader
 				// Créé un calendrier depuis le fichier ics
 				Calendar calendar = builder.build(fis);
 				
-				// Créé le moment correspondant à tout de suite
-				java.util.Calendar today = java.util.Calendar.getInstance();
-				
-				// Créé la fin de la journée
-				java.util.Calendar todayEndDay = java.util.Calendar.getInstance();
-				todayEndDay.set(java.util.Calendar.HOUR_OF_DAY, 0);
-				todayEndDay.set(java.util.Calendar.MINUTE, 0);
-				todayEndDay.set(java.util.Calendar.SECOND, 0);
-				todayEndDay.set(java.util.Calendar.MILLISECOND, 0);
-				todayEndDay.add(java.util.Calendar.DAY_OF_MONTH, 1);
-				
-				// Créé une période de maintenant, à la fin de la journée
-				Period period = new Period(new DateTime(today.getTime()), new Dur(0, 0, 0, 10));
-				
-				// Créé un nouveau filtre sur la periode créée
-				Filter filter = new Filter(new PeriodRule(period));
-				// Applique le filtre pour retourner les évenements courants
-				List<VEvent> eventsToday = (List<VEvent>)filter.filter(calendar.getComponents(Component.VEVENT));
+				// On récupère la liste des évènements
+				List<ADTEvent> eventsToday = calendar.getComponents(Component.VEVENT);
 				
 				return eventsToday;
 			}
@@ -85,9 +69,9 @@ public class ICSReader
 		else
 		{
 			Log.d("MONTAG", "Fichier ICS inexistant.");
-			return (new ArrayList<VEvent>());
+			return (new ArrayList<ADTEvent>());
 		}
-		return (new ArrayList<VEvent>());
+		return (new ArrayList<ADTEvent>());
 	}
 	
 	// Retourne une chaine qui décrit l'évènement
@@ -123,7 +107,8 @@ public class ICSReader
 	// Retourne le batiment du prochain cours
 	public Building getNextBuilding()
 	{
-		List<VEvent> events = getDayEvents();
+		// TODO
+		/*List<VEvent> events = getDayEvents();
 		if (events.size() > 0)
 		{
 			VEvent nextEvent = events.get(0); // Premier event
@@ -144,7 +129,7 @@ public class ICSReader
 		    	Toast.makeText(context, eventToString(nextEvent), Toast.LENGTH_LONG).show();
 		    	return b;
 		    }
-		}
+		}*/
 		return null;
 	}
 	
