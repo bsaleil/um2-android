@@ -124,8 +124,7 @@ public class CustomMapActivity extends Activity
 					}
 				}, mResourceProxy);
 		
-	        //mapView.getOverlays().add(mMyLocationOverlay);
-	        //mapView.invalidate();
+			((UM2Application) getApplication()).setTargetBuilding(null);
 			routeThread.setMapMarkers(mMyLocationOverlay);
 	}
 
@@ -363,14 +362,13 @@ public class CustomMapActivity extends Activity
 					Toast t;
 					if (b == null)
 					{
-						Log.d("DEBUG", "Aucun résultat");
 						t = Toast.makeText(getApplicationContext(),"Aucun résultat", Toast.LENGTH_SHORT);
 						t.show();
 						tts.speak("Aucun résultat", TextToSpeech.QUEUE_FLUSH, null);
 					}
-					else
+					else if (b.getNumber() != -1) // Si c'est un batiment concret
 					{
-					    ((UM2Application) getApplication()).setTargetBuilding(b);
+						((UM2Application) getApplication()).setTargetBuilding(b);
 					}
 				}
 			}
@@ -430,6 +428,7 @@ public class CustomMapActivity extends Activity
 	private Building search(String query)
 	{
 		Building b = null ;
+		Toast.makeText(this, query, Toast.LENGTH_LONG).show();
 	
 		// Traitement des mots clès
 		query = query.toLowerCase();
@@ -457,8 +456,7 @@ public class CustomMapActivity extends Activity
 				return dbController.getBuildingWithNumber(101);
 			}
 			
-			if(query.equals("café") || query.equals("t'as fait") || query.equals("ca fait") || 
-					query.equals("caféteria") || query.equals("caffet")){
+			if(query.equals("caféteria") || query.equals("cafétéria") || query.equals("caffet")){
 					return dbController.getBuildingWithNumber(102);
 			}
 			
@@ -480,20 +478,24 @@ public class CustomMapActivity extends Activity
 				return dbController.getBuildingWithNumber(34);
 			}
 			// Traitement des items
-			if(query.equals("café")){
+			if(query.equals("t'as fait") || query.equals("ca fait") || query.equals("café")){
 				putMarkersFromCategory("café");
+				return new Building(-1);
 			}
 			
 			if(query.equals("toilette")){
-				putMarkersFromCategory("toilette");
+				putMarkersFromCategory("toilettes");
+				return new Building(-1);
 			}
 			
 			if(query.equals("parking")){
 				putMarkersFromCategory("parking");
+				return new Building(-1);
 			}
 			
 			if(query.equals("wifi")){
 				putMarkersFromCategory("wifi");
+				return new Building(-1);
 			}
 				
 		} catch (Exception e) {
