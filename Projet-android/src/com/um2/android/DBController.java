@@ -68,19 +68,19 @@ public class DBController
 	// Insère tous les évènements en BD
 	public void insertAllEvents(List<ADTEvent> events)
 	{
-		ContentValues values = new ContentValues();
-		
-		for (ADTEvent e : events)
+		for (int i=0; i<events.size(); i++)
 		{
+			ADTEvent e = events.get(i);
+			
+			ContentValues values = new ContentValues();
 			values.put(EVENT_BUILDING, e.getADTBuilding());
 			values.put(EVENT_SUMMARY, e.getADTSummary());
 			values.put(EVENT_START_DAY, e.getADTStartDay());
 			values.put(EVENT_END_DAY, e.getADTEndDay());
 			values.put(EVENT_START_MINUTES, e.getADTMinutesStart());
 			values.put(EVENT_END_MINUTES, e.getADTMinutesEnd());
+			db.insert(TABLE_EVENTS, null, values);
 		}
-		
-		db.insert(TABLE_EVENTS, null, values);
 	}
 	
 	// Récupère la liste de SimpleEvent depuis la BD

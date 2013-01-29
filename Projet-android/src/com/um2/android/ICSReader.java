@@ -57,9 +57,14 @@ public class ICSReader
 				Calendar calendar = builder.build(fis);
 				
 				// On récupère la liste des évènements
-				List<ADTEvent> eventsToday = calendar.getComponents(Component.VEVENT);
+				List<VEvent> eventsToday = (List<VEvent>)calendar.getComponents(Component.VEVENT);
+				List<ADTEvent> adtEvents = new ArrayList<ADTEvent>();
+				for (int i=0; i<eventsToday.size(); i++)
+				{
+					adtEvents.add(new ADTEvent(eventsToday.get(i)));
+				}
 				
-				return eventsToday;
+				return adtEvents;
 			}
 			catch (IOException e) { e.printStackTrace(); }
 			catch (ParserException e) { e.printStackTrace(); }

@@ -55,14 +55,16 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 				alertDialog.setMessage(getText(R.string.fichier_inexistant));
 				alertDialog.show();
 			}
-			
-			ICSReader reader = new ICSReader(getActivity().getApplicationContext(), sharedPreferences);
-			DBController db = new DBController(getActivity().getApplicationContext());
-			db.open();
-			
-			Log.d("DEBUG", "ON PASSE AVANT");
-			db.insertAllEvents(reader.readEventsFromPrefFile());
-			Log.d("DEBUG", "ON PASSE APRÈS");
+			else
+			{
+				ICSReader reader = new ICSReader(getActivity().getApplicationContext(), sharedPreferences);
+				DBController db = new DBController(getActivity().getApplicationContext());
+				db.open();
+				Log.d("DEBUG", "ON PASSE AVANT");
+				db.insertAllEvents(reader.readEventsFromPrefFile());
+				Log.d("DEBUG", "ON PASSE APRÈS");
+				db.close();
+			}
 		}
 	}
 	
