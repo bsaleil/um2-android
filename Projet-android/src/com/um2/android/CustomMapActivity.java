@@ -209,10 +209,17 @@ public class CustomMapActivity extends Activity
 		boolean ics_actif = preferences.getBoolean(SettingsFragment.ACTIVER_ICS, true);
 		if (ics_actif) // Si le guidage automatique est active, on cherche le prochaine batiment
 		{
-			ICSReader icsR = new ICSReader(this,preferences);
-			Building b = icsR.getNextBuilding();
-			if (b != null)
-				((UM2Application)getApplication()).setTargetBuilding(b);
+			DBController dbController = new DBController(this);
+			dbController.open();
+		    Building b = dbController.getNextBuilding(this);
+		    dbController.close();
+		    
+		    if (b == null)
+		    	Toast.makeText(this, getString(R.string.pas_cours), Toast.LENGTH_LONG).show();
+		    else
+		    {
+		    	((UM2Application)getApplication()).setTargetBuilding(b);
+		    }
 		}
 	}
 
@@ -429,7 +436,7 @@ public class CustomMapActivity extends Activity
 	{
 		Building b = null ;
 		Toast.makeText(this, query, Toast.LENGTH_LONG).show();
-	
+		Log.d("MONTAG", query);
 		// Traitement des mots clès
 		query = query.toLowerCase();
 		try{
@@ -446,6 +453,10 @@ public class CustomMapActivity extends Activity
 				return dbController.getBuildingWithNumber(Integer.parseInt(query.substring(4)));
 			}
 			
+			if (query.equals("prochain cours") || query.equals("prochain cours") || query.equals("cours suivant") || query.equals("cours suivants"))
+			{
+				return dbController.getNextBuilding(this);
+			}
 			
 			if(query.equals("polytech")){
 				return dbController.getBuildingWithNumber(31);
