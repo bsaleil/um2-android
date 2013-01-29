@@ -24,17 +24,19 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 	
 	private EditTextPreference icsPref;
 	
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
+	    @Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
 
-        // Load the preferences from an XML resource
-        addPreferencesFromResource(R.xml.preferences);
-        
-        icsPref = (EditTextPreference)getPreferenceScreen().findPreference(FICHIER_ICS);
-        icsPref.setSummary(PreferenceManager.getDefaultSharedPreferences(this.getActivity()).getString(FICHIER_ICS, ""));
-    }
+		// Load the preferences from an XML resource
+		addPreferencesFromResource(R.xml.preferences);
+
+		icsPref = (EditTextPreference) getPreferenceScreen().findPreference(FICHIER_ICS);
+		icsPref.setSummary(PreferenceManager
+				.getDefaultSharedPreferences(this.getActivity()).getString(
+						FICHIER_ICS, ""));
+	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
@@ -53,6 +55,14 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 				alertDialog.setMessage(getText(R.string.fichier_inexistant));
 				alertDialog.show();
 			}
+			
+			ICSReader reader = new ICSReader(getActivity().getApplicationContext(), sharedPreferences);
+			DBController db = new DBController(getActivity().getApplicationContext());
+			db.open();
+			
+			Log.d("DEBUG", "ON PASSE AVANT");
+			db.insertAllEvents(reader.readEventsFromPrefFile());
+			Log.d("DEBUG", "ON PASSE APRÈS");
 		}
 	}
 	

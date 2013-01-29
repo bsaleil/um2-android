@@ -31,7 +31,7 @@ public class BuildingsDB extends SQLiteOpenHelper
 	+ EVENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +EVENT_BUILDING + "INTEGER NOT NULL,"
 	+ EVENT_SUMMARY + " TEXT NOT NULL," 
 	+ EVENT_START_DAY + " TEXT NOT NULL, " + EVENT_END_DAY + " TEXT NOT NULL, "
-	+ EVENT_START_MINUTES + " TEXT NOT NULL, " + EVENT_END_MINUTES + " TEXT NOT NULL"
+	+ EVENT_START_MINUTES + " INTEGER NOT NULL, " + EVENT_END_MINUTES + " INTEGER NOT NULL"
 	+"); ";
 	
 	public BuildingsDB(Context context, String name, CursorFactory factory, int version) 

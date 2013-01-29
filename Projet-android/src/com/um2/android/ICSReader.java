@@ -50,7 +50,6 @@ public class ICSReader
 		{
 			try
 			{
-				
 				FileInputStream fis = new FileInputStream(file);
 				CalendarBuilder builder = new CalendarBuilder();
 				

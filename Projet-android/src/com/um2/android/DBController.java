@@ -1,6 +1,7 @@
 package com.um2.android;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,7 +65,8 @@ public class DBController
 		return db;
 	}
 	
-	public void insertAllEvents(ArrayList<ADTEvent> events)
+	// Insère tous les évènements en BD
+	public void insertAllEvents(List<ADTEvent> events)
 	{
 		ContentValues values = new ContentValues();
 		
@@ -81,16 +83,29 @@ public class DBController
 		db.insert(TABLE_EVENTS, null, values);
 	}
 	
-	public ArrayList<ADTEvent> getAllEvents()
+	// Récupère la liste de SimpleEvent depuis la BD
+	public ArrayList<SimpleEvent> getAllEvents()
 	{
-		ArrayList<ADTEvent> res = new ArrayList<ADTEvent>();
+		ArrayList<SimpleEvent> res = new ArrayList<SimpleEvent>();
 		
 		// Avoir toutes les catégories stockées en base
 		Cursor c = db.query(TABLE_EVENTS, new String[] { EVENT_BUILDING, EVENT_SUMMARY,
 				EVENT_START_DAY, EVENT_END_DAY, EVENT_START_MINUTES,
 				EVENT_END_MINUTES }, null, null, null, null, null);
 		
-		Log.d("DEBUG", "Résultats : "+c.getCount());
+		for(int i=0; i<c.getCount(); i++)
+		{
+			SimpleEvent se = new SimpleEvent();
+			
+			se.setADTBuilding(c.getInt(0));
+			se.setADTSummary(c.getString(1));
+			se.setADTStartDay(c.getString(2));
+			se.setADTEndDay(c.getString(3));
+			se.setADTMinutesStart(c.getInt(4));
+			se.setADTMinutesEnd(c.getInt(5));
+			
+			res.add(se);
+		}
 		
 		c.close();
 		return res;

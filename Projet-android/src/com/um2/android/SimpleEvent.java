@@ -12,6 +12,10 @@ public class SimpleEvent
 	private int minutesStart;
 	private int minutesEnd;
 	
+	public SimpleEvent()
+	{
+	}
+	
 	public void setADTSummary(String s)
 	{
 		summary = s;
@@ -32,7 +36,7 @@ public class SimpleEvent
 		endDay = date;
 	}
 	
-	public void etADTMinutesStart(int minutes)
+	public void setADTMinutesStart(int minutes)
 	{
 		minutesStart = minutes;
 	}
