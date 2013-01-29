@@ -114,12 +114,17 @@
 	L'application embarque un système de guidage de l'utilisateur. En effet, lorsque il recherche un Bâtiment ou qu'il en sélectionne un, le chemin le plus court est dessiné entre sa position et le lieu sélectionné. De plus, l'utilisateur peut choisir dans les préférences d'activer le guidage vocal à la manière d'un GPS classique. \\
 	Enfin, l'utilisateur peut cliquer sur le troisième bouton de la barre d'outils qui permet de centrer la vue sur sa position. \\
 	Pour tracer la route le guidage fait appel à une API REST : Yoursroute, une liste de points est retourné, et on dessine le chemin en rouge sur la carte en fonction. Cette API en appelle une autre pour avoir la description du chemin, pas exemple "tournez à gauche" etc.\\
+	Le guidage vocal fonctionne assez simplement : YOURsroute retourne laliste des points de la route, et elle fait appel à une autre API pour avoir un descriptif dans la langue choisie (par exemple "Allez tout droit" puis "Tournez à droite").
+	Il suffit ensuite de faire "lire" ce texte pour avoir un guidage vocal dans l'application. \\
 	
-	% TODO : screen du guidage
 	\begin{center}
-		\includegraphics[scale=0.25]{guidage.png}
+   		\includegraphics[scale=0.25]{guidage.png}
 	\end{center}
 	
+	La recherche vocale utilise l'API de google, elle est assez permissive, par exemple la recherche reconnait "Bâtiment 16", "Bat 16", "16" ou encore par exemple "café" pour afficher la liste des machines à cafés dans la fac. \\
+	De plus l'intégration du calendrier permet de rechercher (textuellement ou via la recherche vocale) "Prochain cours", ou encore "cours suivant". Si le mot est reconnu l'application effectue un guidage vers la salle du prochain cours de la journée.
+	
+	Il faut préciser que la recherche vocale et textuelle ont au final le même effet, car les chaînes de caractères sont traitées pareillement ensuite. C'est à dire que la recherche renvoie uniquement la chaîne reconnue et nous la traitons ensuite, il a fallu bien sûr rajouter quelques filtres pour considérer comme reconnues des expressions proches de celles recherchées. Pour café par exemple (symbolise les machines à café), nous acceptons le terme "ça fait". Ces résultats ont étés obtenus de manière empirique, c'est donc perfectible mais cela rend l'application plus tolérante lors d'une recherche vocale. \\
 	% Liste
 	\paragraph{Liste des lieux}
 	Comme dit précédemment, l'utilisateur peut rechercher un Bâtiment pour se faire guider. De plus, en cliquant sur l'icône "lieux" de la barre d'outils, il obtient une vue à trois onglets : \\
