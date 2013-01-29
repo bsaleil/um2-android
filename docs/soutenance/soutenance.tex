@@ -38,6 +38,10 @@
 \begin{document}
 	\begin{frame}
 		\titlepage
+		
+		\begin{center}
+			\includegraphics[scale=0.25]{logo.png}
+		\end{center}
 	\end{frame}
 
 	%Plan
@@ -51,8 +55,8 @@
 			\begin{itemize}
 				\item Projet Universitaire
 				\item Projet de Master 2
-				\item Développement d'une application utilisation des composants d'Android
-				\item Découverte des plateformes "limitées"
+				\item Développement d'une application utilisant des composants d'Android
+				\item Découverte des plateformes embarquées
 			\end{itemize}
 		\end{frame}
 		
@@ -61,9 +65,9 @@
 			\begin{exampleblock}{Consignes}
 				\begin{itemize}
 					\item Application de guidage des étudiants au sein du campus 
-					\item Utilisation du GPS
+					\item Utilisation du GPS (localisation, routes)
 					\item Placement de marqueurs
-					\item Mener un projet de A à Z
+					\item Définir et implémenter des fonctionnalités
 				\end{itemize}
 			\end{exampleblock}
 		\end{frame}
@@ -74,8 +78,9 @@
 			\begin{block}{Stratégiques}
 				\begin{itemize}
 					\item Répartition des tâches
-					\item Usage de bibliothèques "libres" si possible
+					\item Usage de bibliothèques libres
 					\item Utilisation d'un gestionnaire de version
+					\item Développement itératif
 				\end{itemize}
 			\end{block}		
 			\pause
@@ -91,9 +96,60 @@
 			\end{block}
 		\end{frame}
 		
+		\begin{frame}{Architecture}
+			\begin{center}
+				\includegraphics[scale=0.5]{diagram.jpeg}
+			\end{center}
+		\end{frame}
+		
+		\begin{frame}
+		Persistence des données
+			\begin{itemize}
+			\item Utilisation de SQLite
+			\item Création de nos propres parseurs
+			\item Définition de nos propres classes
+			\item Sérialisation des classes en BD
+			\item Recherche, filtrage, affichage...
+			\end{itemize}
+		\end{frame}
+		
+		\begin{frame}
+		Découverte de la plateforme
+			\begin{itemize}
+			\item Définition d'icônes
+			\item Changements d'activités
+			\item Traduction
+			\item Exploitation du hardware
+			\end{itemize}
+		\end{frame}
 	\section{Résultats}
-		% quelques screens
-	
+		\begin{frame}
+			Vue de base de l'application
+			\begin{center}
+				\includegraphics[scale=0.15]{../rapport/carte.png}
+			\end{center}
+		\end{frame}
+		
+		\begin{frame}
+			Guidage
+			\begin{center}
+				\includegraphics[scale=0.15]{../rapport/guidage.png}
+			\end{center}
+		\end{frame}
+		
+		\begin{frame}
+			Affichage des marqueurs
+			\begin{center}
+				\includegraphics[scale=0.15]{../rapport/marqueurs.png}
+			\end{center}
+		\end{frame}
+		
+		\begin{frame}
+			Affichage en liste
+			\begin{center}
+				\includegraphics[scale=0.15]{../rapport/liste.png}
+			\end{center}
+		\end{frame}
 	\section{Conclusion}
 		\begin{frame}{Difficultés}
 			\begin{itemize}
@@ -122,8 +178,4 @@
 				\end{itemize}
 			\end{exampleblock}
 		\end{frame}
-		
-		\begin{frame}{TODO PINGOUIN}
-			end frame
-		\end{frame}	
 \end{document}
