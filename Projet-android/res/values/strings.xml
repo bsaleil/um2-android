@@ -9,6 +9,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Paramètres</string>
     <string name="apropos_menu">À propos</string>
+    <string name="pas_cours">Pas de cours trouvé</string>
 
     <!-- Vue liste des batiments -->
     <string name="title_activity_building_list">Bâtiments</string>
@@ -20,6 +21,7 @@
     <string name="resto_u">Restaurant Universitaire</string>
     <string name="cafeteria">Cafétéria</string>
     <string name="CSU">Centre Sportif Universitaire (CSU)</string>
+    <string name="batiment_inconnu">Bâtiment inconnu</string>
 
     <!-- Préférences -->
     <string name="title_activity_preferences">Préférences</string>

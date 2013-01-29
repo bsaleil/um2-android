@@ -1,7 +1,12 @@
 package com.um2.android;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import net.fortuna.ical4j.model.DateTime;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,6 +17,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.osmdroid.util.GeoPoint;
 
@@ -38,6 +44,13 @@ public class DBController
 	private static final String EVENT_END_DAY = "event_end_day";
 	private static final String EVENT_START_MINUTES = "event_start_minutes";
 	private static final String EVENT_END_MINUTES = "event_end_minutes";
+	
+	private static final String CREATE_BDD_EVENTS = "CREATE TABLE " + TABLE_EVENTS + " ("
+			+ EVENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +EVENT_BUILDING + " INTEGER NOT NULL,"
+			+ EVENT_SUMMARY + " TEXT NOT NULL, " 
+			+ EVENT_START_DAY + " TEXT NOT NULL, " + EVENT_END_DAY + " TEXT NOT NULL, "
+			+ EVENT_START_MINUTES + " INTEGER NOT NULL, " + EVENT_END_MINUTES + " INTEGER NOT NULL "
+			+"); ";
 	
 	private SQLiteDatabase db;
  
@@ -68,6 +81,8 @@ public class DBController
 	// Insère tous les évènements en BD
 	public void insertAllEvents(List<ADTEvent> events)
 	{
+		db.execSQL("DROP TABLE " + TABLE_EVENTS + ";");
+		db.execSQL(CREATE_BDD_EVENTS);
 		for (int i=0; i<events.size(); i++)
 		{
 			ADTEvent e = events.get(i);
@@ -95,6 +110,7 @@ public class DBController
 		
 		for(int i=0; i<c.getCount(); i++)
 		{
+			c.moveToPosition(i);
 			SimpleEvent se = new SimpleEvent();
 			
 			se.setADTBuilding(c.getInt(0));
@@ -109,6 +125,73 @@ public class DBController
 		
 		c.close();
 		return res;
+	}
+	
+	// Récupère les évenements du jour
+	public ArrayList<SimpleEvent> getTodayEvents()
+	{
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = new Date();
+		String strDay = dateFormat.format(date);
+		
+		ArrayList<SimpleEvent> res = new ArrayList<SimpleEvent>();
+		
+		Cursor c = db.query(TABLE_EVENTS, new String[] { EVENT_BUILDING, EVENT_SUMMARY,
+				EVENT_START_DAY, EVENT_END_DAY, EVENT_START_MINUTES,
+				EVENT_END_MINUTES }, EVENT_START_DAY + " = \"" + strDay +"\"", null, null, null, null);
+		for(int i=0; i<c.getCount(); i++)
+		{
+			c.moveToPosition(i);
+			SimpleEvent se = new SimpleEvent();
+			
+			se.setADTBuilding(c.getInt(0));
+			se.setADTSummary(c.getString(1));
+			se.setADTStartDay(c.getString(2));
+			se.setADTEndDay(c.getString(3));
+			se.setADTMinutesStart(c.getInt(4));
+			se.setADTMinutesEnd(c.getInt(5));
+			
+			res.add(se);
+		}
+		c.close();
+		return res;
+	}
+	
+	public Building getNextBuilding(Context c)
+	{
+		DateTime date = new DateTime();
+		int nowMinutes = date.getHours()*60 + date.getMinutes();
+		int minMinutes = 1440;
+		
+		int numCurrentBuilding = -1;
+		int indexCurrentEvent = 0;
+		
+		List<SimpleEvent> events = getTodayEvents();
+		
+		for (int i=0; i<events.size(); i++) // Pour chaque évènement
+		{
+			if (events.get(i).getMinutesStart() > nowMinutes && events.get(i).getMinutesStart() < minMinutes)
+			{
+				indexCurrentEvent = i;
+				minMinutes = events.get(i).getMinutesStart();
+				numCurrentBuilding = events.get(i).getNumBuilding();
+			}
+			if (events.get(i).getMinutesEnd() > nowMinutes && events.get(i).getMinutesEnd() < minMinutes)
+			{
+				indexCurrentEvent = i;
+				minMinutes = events.get(i).getMinutesEnd();
+				numCurrentBuilding = events.get(i).getNumBuilding();
+			}
+		}
+		
+		if (numCurrentBuilding <= 0)
+			return null;
+		else
+		{
+			Toast.makeText(c, events.get(indexCurrentEvent).eventToString(c), Toast.LENGTH_LONG).show();
+			Building b = getBuildingWithNumber(numCurrentBuilding);
+			return b;
+		}
 	}
  
 	public long insertBuilding(Building b)

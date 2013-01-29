@@ -69,7 +69,7 @@ public class ADTEvent
 	
 	public int getADTMinutesEnd()
 	{
-		String end = event.getStartDate().getValue();
+		String end = event.getEndDate().getValue();
 		String endH = end.substring(9, 11); // Récupère l'h de debut
 		String endM = end.substring(11, 13);// Récupère l'm de fin
 		
