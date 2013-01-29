@@ -28,12 +28,15 @@ public class ScheduleTab extends ListFragment
 		
 		// Récupère les evenements du jour
 		icsr = new ICSReader(this.getActivity(), PreferenceManager.getDefaultSharedPreferences(this.getActivity()));
-		events = icsr.getDayEvents();
+		
+		//TODO LIRE EN BD
+		
+		/*events = icsr.getDayEvents();
 		// Les ajoute au tableaux
 		for (int i=0; i<events.size(); i++)
 		{
 			listItems.add(icsr.eventToString(events.get(i)));
-		}
+		}*/
 		// Définit l'adapter
 		setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listItems));
 	}
